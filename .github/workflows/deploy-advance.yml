@@ -62,10 +62,10 @@ jobs:
           aws-region: eu-west-1
 
       - name: CDK diff
-        run: npm run cdk -- diff 'Wave1_*' --app ./cloud_assembly_output
+        run: npm run cdk -- diff 'Wave1_*' --exclusively --app ./cloud_assembly_output
 
       - name: CDK deploy
-        run: npm run cdk -- deploy 'Wave1_*' --require-approval never --exclusively --concurrency 10 --app ./cloud_assembly_output
+        run: npm run cdk -- deploy 'Wave1_*' --require-approval never --concurrency 10 --exclusively --app ./cloud_assembly_output
 
   # Manual approval
 
@@ -92,7 +92,7 @@ jobs:
           aws-region: eu-west-1
 
       - name: CDK diff
-        run: npm run cdk -- diff 'Wave2_*' --app ./cloud_assembly_output
+        run: npm run cdk -- diff 'Wave2_*' --exclusively --app ./cloud_assembly_output
 
       - name: CDK deploy
-        run: npm run cdk -- deploy 'Wave2_*' --require-approval never --exclusively --concurrency 10 --app ./cloud_assembly_output
+        run: npm run cdk -- deploy 'Wave2_*' --require-approval never --concurrency 10 --exclusively --app ./cloud_assembly_output
