@@ -35,4 +35,4 @@ jobs:
           aws-region: eu-west-1
 
       - name: CDK diff
-        run: cnpm run cdk -- diff '**'
+        run: npm run cdk -- diff '**'
