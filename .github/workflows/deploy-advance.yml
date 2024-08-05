@@ -37,7 +37,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ./
-          key: "cdk-asets-${{ github.sha }}"
+          key: "cdk-assets-${{ github.sha }}"
 
   deploy:
     name: CDK Diff and Deploy
@@ -50,10 +50,10 @@ jobs:
       id-token: write
     steps:
       - name: Fetch CDK Assets
-        uses: actions/cache/save@v4
+        uses: actions/cache/restore@v4
         with:
           path: ./
-          key: "cdk-asets-${{ github.sha }}"
+          key: "cdk-assets-${{ github.sha }}"
 
       - name: List files
         run: ls -lsha
