@@ -10,10 +10,11 @@ env:
 
 jobs:
   synth:
-    name: CDK Synth
+    name: Build and CDK Synth
     runs-on: ubuntu-latest
     permissions:
       actions: write
+
       contents: read
       id-token: write
     steps:
@@ -35,7 +36,7 @@ jobs:
       - name: Cache CDK Assets
         uses: actions/cache/save@v4
         with:
-          path: "./"
+          path: /
           key: "cdk-asets-${{ github.sha }}"
 
   deploy:
@@ -49,7 +50,7 @@ jobs:
       - name: Fetch CDK Assets
         uses: actions/cache/save@v4
         with:
-          path: "./"
+          path: /
           key: "cdk-asets-${{ github.sha }}"
 
       - name: List files
