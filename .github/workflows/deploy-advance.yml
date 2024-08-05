@@ -36,7 +36,7 @@ jobs:
       - name: Cache CDK Assets
         uses: actions/cache/save@v4
         with:
-          path: /
+          path: ./
           key: "cdk-asets-${{ github.sha }}"
 
   deploy:
@@ -52,7 +52,7 @@ jobs:
       - name: Fetch CDK Assets
         uses: actions/cache/save@v4
         with:
-          path: /
+          path: ./
           key: "cdk-asets-${{ github.sha }}"
 
       - name: List files
