@@ -9,7 +9,11 @@
     "build": "tsc",
     "watch": "tsc -w",
     "diff": "cdk diff '**' --profile rehan-demo-exported",
+    "diff:Wave1": "cdk diff 'Wave1_*' --profile rehan-demo-exported --exclusively",
+    "diff:Wave2": "cdk diff 'Wave2_*' --profile rehan-demo-exported --exclusively",
     "deploy": "cdk deploy '**' --profile rehan-demo-exported --require-approval never",
+    "deploy:Wave1": "cdk deploy 'Wave1_*' --profile rehan-demo-exported --require-approval never --exclusively",
+    "deploy:Wave2": "cdk deploy 'Wave2_*' --profile rehan-demo-exported --require-approval never --exclusively",
     "destroy": "cdk destroy * --profile rehan-demo-exported",
     "install-cdk-express-pipeline-npm": "npm uninstall cdk-express-pipeline && npm install cdk-express-pipeline",
     "package-src": "cd /Users/rehanvandermerwe/Rehan/Projects/cdk-express-pipeline && npm run compile && npm run package:js",
@@ -26,7 +30,7 @@
   },
   "dependencies": {
     "aws-cdk-lib": "2.136.0",
-    "cdk-express-pipeline": "file:../cdk-express-pipeline/dist/js/cdk-express-pipeline@0.0.0.jsii.tgz",
+    "cdk-express-pipeline": "^0.0.1",
     "constructs": "10.0.5",
     "source-map-support": "^0.5.21"
   }
