@@ -39,8 +39,8 @@ jobs:
           path: ./
           key: "cdk-assets-${{ github.sha }}"
 
-  deploy:
-    name: CDK Diff and Deploy
+  wave1:
+    name: Wave 2
     needs:
       - synth
     runs-on: ubuntu-latest
@@ -55,8 +55,35 @@ jobs:
           path: ./
           key: "cdk-assets-${{ github.sha }}"
 
-      - name: List files
-        run: ls -lsha
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+          aws-region: eu-west-1
+
+      - name: CDK diff
+        run: npm run cdk -- diff 'Wave1_*' --app ./cloud_assembly_output
+
+      - name: CDK deploy
+        run: npm run cdk -- deploy 'Wave1_*' --require-approval never --concurrency 10 --app ./cloud_assembly_output
+
+  # Manual approval
+
+  wave2:
+    name: Wave 2
+    needs:
+      - wave1
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+      id-token: write
+    steps:
+      - name: Fetch CDK Assets
+        uses: actions/cache/restore@v4
+        with:
+          path: ./
+          key: "cdk-assets-${{ github.sha }}"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -65,7 +92,7 @@ jobs:
           aws-region: eu-west-1
 
       - name: CDK diff
-        run: npm run cdk -- diff '**' --app ./cloud_assembly_output
+        run: npm run cdk -- diff 'Wave2_*' --app ./cloud_assembly_output
 
       - name: CDK deploy
-        run: npm run cdk -- deploy '**' --require-approval never --concurrency 10 --app ./cloud_assembly_output
+        run: npm run cdk -- deploy 'Wave2_*' --require-approval never --concurrency 10 --app ./cloud_assembly_output
