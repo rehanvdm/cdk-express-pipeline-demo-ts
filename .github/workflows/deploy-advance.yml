@@ -41,6 +41,8 @@ jobs:
 
   deploy:
     name: CDK Diff and Deploy
+    needs:
+      - synth
     runs-on: ubuntu-latest
     permissions:
       actions: write
