@@ -1,0 +1,33 @@
+{
+  "name": "cdk-express-pipeline-demo-ts",
+  "version": "0.1.0",
+  "bin": {
+    "cdk-express-pipeline-demo-ts": "bin/cdk-express-pipeline-demo-ts.js"
+  },
+  "scripts": {
+    "cdk": "cdk",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "diff": "cdk diff '**' --profile rehan-demo-exported",
+    "deploy": "cdk deploy '**' --profile rehan-demo-exported --require-approval never",
+    "destroy": "cdk destroy * --profile rehan-demo-exported",
+    "install-cdk-express-pipeline-npm": "npm uninstall cdk-express-pipeline && npm install cdk-express-pipeline",
+    "package-src": "cd /Users/rehanvandermerwe/Rehan/Projects/cdk-express-pipeline && npm run compile && npm run package:js",
+    "install-cdk-express-pipeline-locally": "npm uninstall cdk-express-pipeline && npm run package-src && npm install /Users/rehanvandermerwe/Rehan/Projects/cdk-express-pipeline/dist/js/cdk-express-pipeline@0.0.0.jsii.tgz"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "20.11.30",
+    "aws-cdk": "2.136.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.4.3"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "2.136.0",
+    "cdk-express-pipeline": "file:../cdk-express-pipeline/dist/js/cdk-express-pipeline@0.0.0.jsii.tgz",
+    "constructs": "10.0.5",
+    "source-map-support": "^0.5.21"
+  }
+}
