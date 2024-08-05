@@ -36,7 +36,7 @@ jobs:
           aws-region: eu-west-1
 
       - name: CDK diff
-        run: cdk diff '**'
+        run: npm run cdk -- diff '**'
 
       - name: CDK deploy
-        run: cdk deploy '**' --require-approval never --concurrency 10
+        run: npm run cdk -- deploy '**' --require-approval never --concurrency 10
