@@ -1,7 +1,7 @@
 # CDK Express Pipeline Demo TS
 
 This is a demo project for the [CDK Express Pipeline](https://github.com/rehanvdm/cdk-express-pipeline) showcasing
-how to use the library in a TypeScript project. This pipeline has teh following structure:
+how to use the library in a TypeScript project. This pipeline has the following structure:
 
 ```plaintext
 🌊 Waves  - Deployed sequentially
@@ -18,7 +18,7 @@ how to use the library in a TypeScript project. This pipeline has teh following 
     📄 StackC (Wave2_Stage1_StackC)
 ```
 
-It is standard CDK TypeScript project that has GitHub workflows and some extra NPM scripts to diff and deploy locally.
+It is a standard CDK TypeScript project that has GitHub workflows and some extra NPM scripts to diff and deploy locally.
 
 ## GitHub Workflows
 
@@ -42,9 +42,9 @@ The `synth` job builds the CDK app and saves the cloud assembly to the `./cloud_
 repo with installed NPM packages and the cloud assembly is then cached. This job of the pipeline does not have access
 to any AWS Secrets, the installing of packages and building is decoupled from the deployment improving security.
 
-The `wave1` and `wave2` jobs fetches the cloud assembly from the cache and then does a CDK Diff and Deploy on only their
+The `wave1` and `wave2` jobs fetch the cloud assembly from the cache and then do a CDK Diff and Deploy on only their
 stacks. The `wave1` job targets all the stacks that start with `Wave1_` and the `wave2` job targets all the stacks that
-start with `Wave2_`. It is important to add the `--exclusively` flag to only focus on the specified stacks and not its
+start with `Wave2_`. It is important to add the `--exclusively` flag to only focus on the specified stacks and not their
 dependencies.
 
 ![deploy_adv.png](docs/_imgs/deploy_adv.png)
