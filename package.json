@@ -8,12 +8,18 @@
     "cdk": "cdk",
     "build": "tsc",
     "watch": "tsc -w",
-    "diff": "cdk diff '**' --profile rehan-demo-exported",
-    "diff:Wave1": "cdk diff 'Wave1_*' --profile rehan-demo-exported --exclusively",
-    "diff:Wave2": "cdk diff 'Wave2_*' --profile rehan-demo-exported --exclusively",
+    "diff": "cdk diff '**' --profile systanics-role-exported",
+    "deploy:test": "cdk synth Wave2_* --profile systanics-role-exported --exclusively --require-approval never --concurrency 10 --output .cdk-express-pipeline/assembly",
+    "diff:Wave1": "cdk diff 'Wave1_*' --profile systanics-role-exported --exclusively",
+    "diff:Wave2": "cdk diff 'Wave2_*' --profile systanics-role-exported --exclusively",
+
+    "diff:Wave2:Pipe": "npx ts-node --prefer-ts-exts bin/cdk-express-pipeline.ts deploy 'Wave2_*' --  --profile systanics-role-exported --exclusively --require-approval never --concurrency 10",
+
+    "diff:Wave2:PipeAssembly": "npx ts-node --prefer-ts-exts bin/cdk-express-pipeline.ts deploy 'Wave2_*' -- --app cdk.out  --profile systanics-role-exported --exclusively --concurrency 10",
+    "diff:Wave2:PipePACKAGE": "cdk-express-pipeline deploy 'Wave2_*' --  --profile rehan-demo-exported --exclusively",
     "deploy": "cdk deploy '**' --profile rehan-demo-exported --require-approval never",
-    "deploy:Wave1": "cdk deploy 'Wave1_*' --profile rehan-demo-exported --require-approval never --exclusively",
-    "deploy:Wave2": "cdk deploy 'Wave2_*' --profile rehan-demo-exported --require-approval never --exclusively",
+    "deploy:Wave1": "cdk deploy 'Wave1_*' --profile rehan-demo-exported --require-approval never --exclusively --concurrency 10",
+    "deploy:Wave2": "cdk deploy 'Wave2_*' --profile rehan-demo-exported --require-approval never --exclusively --concurrency 10",
     "destroy": "cdk destroy * --profile rehan-demo-exported",
     "install-cdk-express-pipeline-npm": "npm uninstall cdk-express-pipeline && npm install cdk-express-pipeline",
     "package-src": "cd /Users/rehanvandermerwe/Rehan/Projects/cdk-express-pipeline && npm run compile && npm run package:js",
@@ -29,9 +35,17 @@
     "typescript": "~5.4.3"
   },
   "dependencies": {
+    "@aws-sdk/client-cloudformation": "^3.624.0",
+    "@aws-sdk/client-iam": "^3.624.0",
+    "@aws-sdk/client-s3": "^3.627.0",
+    "@aws-sdk/client-sts": "^3.624.0",
     "aws-cdk-lib": "2.136.0",
-    "cdk-express-pipeline": "^1.0.0",
+    "cdk-express-pipeline": "file:../cdk-express-pipeline/dist/js/cdk-express-pipeline@0.0.0.jsii.tgz",
+    "chalk": "^4.1.2",
+    "commander": "^12.1.0",
     "constructs": "10.0.5",
-    "source-map-support": "^0.5.21"
+    "execa": "^5.1.1",
+    "source-map-support": "^0.5.21",
+    "yaml": "1.10.2"
   }
 }
