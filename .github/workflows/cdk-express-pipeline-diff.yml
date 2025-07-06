@@ -35,7 +35,7 @@ jobs:
             stack-selector-patterns: Wave2_*
             command: npm run cdk diff Wave2_* --app=cdk.out/dev
             write-as-comment: true
-        fail-fast: false
+      fail-fast: false
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -71,7 +71,7 @@ jobs:
             stack-selector-patterns: Wave2_*
             command: npm run cdk diff Wave2_* --app=cdk.out/prod
             write-as-comment: true
-        fail-fast: false
+      fail-fast: false
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
