@@ -41,7 +41,7 @@ runs:
         title: ${{ inputs.comment-title }}
         defaultStageDisplayName: "`**`"
         stackSelectorPatterns: ${{ inputs.stack-selector-patterns }}
-        cdkOutDir: ${{ inputs.cloud-assembly-dir }}
+        cdkOutDir: ${{ inputs.cloud-assembly-directory }}
         githubToken: ${{ inputs.github-token }}
         failOnDestructiveChanges: false
     - name: CDK Diff Command
