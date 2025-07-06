@@ -1,0 +1,79 @@
+name: CDK Express Pipeline Diff
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Synth
+        uses: ./.github/actions/cdk-express-pipeline-synth
+  diff__dev:
+    name: CDK Diff dev
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      id-token: write
+      pull-requests: write
+    strategy:
+      matrix:
+        include:
+          - name: global
+            cloud-assembly-directory: cdk.out/dev
+            stack-selector-patterns: global_*
+            command: npm run cdk diff global_* --app=cdk.out/dev
+            write-as-comment: true
+          - name: app
+            cloud-assembly-directory: cdk.out/dev
+            stack-selector-patterns: app_*
+            command: npm run cdk diff app_* --app=cdk.out/dev
+            write-as-comment: true
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Synth
+        uses: ./.github/actions/cdk-express-pipeline-diff
+        with:
+          title: "CDK Diff: dev - ${{ matrix.name }}"
+          stack-selector-patterns: ${{ matrix.stack-selector-patterns }}
+          cloud-assembly-directory: ${{ matrix.cloud-assembly-directory }}
+          command: ${{ matrix.command }}
+          write-as-comment: ${{ matrix.write-as-comment }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+  diff__prod:
+    name: CDK Diff prod
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      id-token: write
+      pull-requests: write
+    strategy:
+      matrix:
+        include:
+          - name: global
+            cloud-assembly-directory: cdk.out/prod
+            stack-selector-patterns: global_*
+            command: npm run cdk diff global_* --app=cdk.out/prod
+            write-as-comment: true
+          - name: app
+            cloud-assembly-directory: cdk.out/prod
+            stack-selector-patterns: app_*
+            command: npm run cdk diff app_* --app=cdk.out/prod
+            write-as-comment: true
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Synth
+        uses: ./.github/actions/cdk-express-pipeline-diff
+        with:
+          title: "CDK Diff: prod - ${{ matrix.name }}"
+          stack-selector-patterns: ${{ matrix.stack-selector-patterns }}
+          cloud-assembly-directory: ${{ matrix.cloud-assembly-directory }}
+          command: ${{ matrix.command }}
+          write-as-comment: ${{ matrix.write-as-comment }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}

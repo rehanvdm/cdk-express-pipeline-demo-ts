@@ -1,0 +1,50 @@
+name: CDK Diff Action
+description: Run CDK diff for a specific stack pattern and post results to PR
+inputs:
+  title:
+    required: true
+    description: Title for the diff comment
+  stack-selector-patterns:
+    required: true
+    description: The value of the {stackSelector} replacement in the command
+  command:
+    required: true
+    description: CDK diff command
+  cloud-assembly-directory:
+    required: true
+    description: The directory where the CDK cloud assembly is located
+  github-token:
+    required: true
+    description: GitHub token for posting comments
+  write-as-comment:
+    required: true
+    description: Whether to write the diff as a comment or do the command instead
+runs:
+  using: composite
+  steps:
+    - name: Restore Build Cache
+      uses: actions/cache/restore@v4
+      with:
+        key: cache-build-${{ github.sha }}
+        path: |-
+          cdk.out/
+          node_modules/
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+        aws-region: us-east-1
+    - name: CDK Diff Comment
+      if: "${{ inputs.write-as-comment == true }} "
+      uses: corymhall/cdk-diff-action@v2
+      with:
+        title: ${{ inputs.title }}
+        defaultStageDisplayName: "`**`"
+        stackSelectorPatterns: ${{ inputs.stack-selector-patterns }}
+        cdkOutDir: ${{ inputs.cloud-assembly-dir }}
+        githubToken: ${{ inputs.github-token }}
+        failOnDestructiveChanges: false
+    - name: CDK Diff Command
+      if: "${{ inputs.write-as-comment == false }} "
+      run: ${{ inputs.command }}
+      shell: bash
