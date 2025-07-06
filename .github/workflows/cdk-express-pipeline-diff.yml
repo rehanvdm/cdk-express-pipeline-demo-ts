@@ -6,13 +6,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    name: Build and Synth
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
   diff__dev:
-    name: CDK Diff dev
+    name: Diff dev - ${{ matrix.name }}
+    needs:
+      - build
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -22,15 +25,15 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: global
+          - name: wave1
             cloud-assembly-directory: cdk.out/dev
-            stack-selector-patterns: global_*
-            command: npm run cdk diff global_* --app=cdk.out/dev
+            stack-selector-patterns: Wave1_*
+            command: npm run cdk diff Wave1_* --app=cdk.out/dev
             write-as-comment: true
-          - name: app
+          - name: wave2
             cloud-assembly-directory: cdk.out/dev
-            stack-selector-patterns: app_*
-            command: npm run cdk diff app_* --app=cdk.out/dev
+            stack-selector-patterns: Wave2_*
+            command: npm run cdk diff Wave2_* --app=cdk.out/dev
             write-as-comment: true
     steps:
       - name: Checkout repo
@@ -38,14 +41,16 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-diff
         with:
-          title: "CDK Diff: dev - ${{ matrix.name }}"
           stack-selector-patterns: ${{ matrix.stack-selector-patterns }}
           cloud-assembly-directory: ${{ matrix.cloud-assembly-directory }}
           command: ${{ matrix.command }}
           write-as-comment: ${{ matrix.write-as-comment }}
+          comment-title: "CDK Diff: dev - ${{ matrix.name }}"
           github-token: ${{ secrets.GITHUB_TOKEN }}
   diff__prod:
-    name: CDK Diff prod
+    name: Diff prod - ${{ matrix.name }}
+    needs:
+      - build
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -55,15 +60,15 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: global
+          - name: wave1
             cloud-assembly-directory: cdk.out/prod
-            stack-selector-patterns: global_*
-            command: npm run cdk diff global_* --app=cdk.out/prod
+            stack-selector-patterns: Wave1_*
+            command: npm run cdk diff Wave1_* --app=cdk.out/prod
             write-as-comment: true
-          - name: app
+          - name: wave2
             cloud-assembly-directory: cdk.out/prod
-            stack-selector-patterns: app_*
-            command: npm run cdk diff app_* --app=cdk.out/prod
+            stack-selector-patterns: Wave2_*
+            command: npm run cdk diff Wave2_* --app=cdk.out/prod
             write-as-comment: true
     steps:
       - name: Checkout repo
@@ -71,9 +76,9 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-diff
         with:
-          title: "CDK Diff: prod - ${{ matrix.name }}"
           stack-selector-patterns: ${{ matrix.stack-selector-patterns }}
           cloud-assembly-directory: ${{ matrix.cloud-assembly-directory }}
           command: ${{ matrix.command }}
           write-as-comment: ${{ matrix.write-as-comment }}
+          comment-title: "CDK Diff: prod - ${{ matrix.name }}"
           github-token: ${{ secrets.GITHUB_TOKEN }}

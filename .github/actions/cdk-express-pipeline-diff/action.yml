@@ -1,9 +1,6 @@
 name: CDK Diff Action
 description: Run CDK diff for a specific stack pattern and post results to PR
 inputs:
-  title:
-    required: true
-    description: Title for the diff comment
   stack-selector-patterns:
     required: true
     description: The value of the {stackSelector} replacement in the command
@@ -19,6 +16,9 @@ inputs:
   write-as-comment:
     required: true
     description: Whether to write the diff as a comment or do the command instead
+  comment-title:
+    required: true
+    description: Title for the diff comment
 runs:
   using: composite
   steps:
@@ -38,7 +38,7 @@ runs:
       if: "${{ inputs.write-as-comment == true }} "
       uses: corymhall/cdk-diff-action@v2
       with:
-        title: ${{ inputs.title }}
+        title: ${{ inputs.comment-title }}
         defaultStageDisplayName: "`**`"
         stackSelectorPatterns: ${{ inputs.stack-selector-patterns }}
         cdkOutDir: ${{ inputs.cloud-assembly-dir }}
