@@ -1,4 +1,5 @@
 name: Custom Build
+description: Only needed if Synth build step is set to 'workflow'. When able, use the `preset-` instead
 runs:
   using: composite
   steps:

@@ -5,7 +5,7 @@ runs:
     - name: Checkout repo
       uses: actions/checkout@v4
     - name: Build workflow
-      uses: ./.github/actions/build
+      uses: ./.github/actions/build-manual
     - name: CDK synth dev
       shell: bash
       run: npm run cdk -- synth '**' -c env=dev --output=cdk.out/dev
