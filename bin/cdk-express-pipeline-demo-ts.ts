@@ -16,12 +16,18 @@ const expressPipeline = new CdkExpressPipeline();
 
 // === Wave 1 ===
 const wave1 = expressPipeline.addWave('Wave1');
+// const wave1 = expressPipeline.addWave('Wave1', true); // Sequential stage deployment
+
 // --- Wave 1, Stage 1---
 const wave1Stage1 = wave1.addStage('Stage1');
 
 const stackA = new StackA(app, 'StackA', wave1Stage1, {env: stackEnv});
 const stackB = new StackB(app, 'StackB', wave1Stage1, {env: stackEnv});
 stackB.addExpressDependency(stackA);
+
+// --- Wave 1, Stage 2---
+const wave1Stage2 = wave1.addStage('Stage2');
+const stack2A = new StackA(app, 'Stack2A', wave1Stage2, {env: stackEnv});
 
 // === Wave 2 ===
 const wave2 = expressPipeline.addWave('Wave2');
