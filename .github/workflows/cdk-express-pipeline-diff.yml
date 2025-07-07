@@ -27,22 +27,22 @@ jobs:
         include:
           - name: wave1___stage1
             cloud-assembly-directory: cdk.out/dev
-            stack-selector-patterns: "'Wave1_Stage1_*'"
-            command: npm run cdk diff 'Wave1_Stage1_*' --app=cdk.out/dev
+            stack-selector-patterns: Wave1_Stage1_*
+            command: npm run cdk diff Wave1_Stage1_* --app=cdk.out/dev
             write-as-comment: true
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
           - name: wave1___stage2
             cloud-assembly-directory: cdk.out/dev
-            stack-selector-patterns: "'Wave1_Stage2_*'"
-            command: npm run cdk diff 'Wave1_Stage2_*' --app=cdk.out/dev
+            stack-selector-patterns: Wave1_Stage2_*
+            command: npm run cdk diff Wave1_Stage2_* --app=cdk.out/dev
             write-as-comment: true
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
           - name: wave2___stage1
             cloud-assembly-directory: cdk.out/dev
-            stack-selector-patterns: "'Wave2_Stage1_*'"
-            command: npm run cdk diff 'Wave2_Stage1_*' --app=cdk.out/dev
+            stack-selector-patterns: Wave2_Stage1_*
+            command: npm run cdk diff Wave2_Stage1_* --app=cdk.out/dev
             write-as-comment: true
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
@@ -76,22 +76,22 @@ jobs:
         include:
           - name: wave1___stage1
             cloud-assembly-directory: cdk.out/prod
-            stack-selector-patterns: "'Wave1_Stage1_*'"
-            command: npm run cdk diff 'Wave1_Stage1_*' --app=cdk.out/prod
+            stack-selector-patterns: Wave1_Stage1_*
+            command: npm run cdk -- diff Wave1_Stage1_* --app=cdk.out/prod
             write-as-comment: true
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
           - name: wave1___stage2
             cloud-assembly-directory: cdk.out/prod
-            stack-selector-patterns: "'Wave1_Stage2_*'"
-            command: npm run cdk diff 'Wave1_Stage2_*' --app=cdk.out/prod
+            stack-selector-patterns: Wave1_Stage2_*
+            command: npm run cdk diff Wave1_Stage2_* --app=cdk.out/prod
             write-as-comment: true
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
           - name: wave2___stage1
             cloud-assembly-directory: cdk.out/prod
-            stack-selector-patterns: "'Wave2_Stage1_*'"
-            command: npm run cdk diff 'Wave2_Stage1_*' --app=cdk.out/prod
+            stack-selector-patterns: Wave2_Stage1_*
+            command: npm run cdk diff Wave2_Stage1_* --app=cdk.out/prod
             write-as-comment: true
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
