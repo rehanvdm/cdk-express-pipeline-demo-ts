@@ -34,7 +34,7 @@ jobs:
           - name: wave2
             cloud-assembly-directory: cdk.out/dev
             stack-selector-patterns: Wave2_*
-            command: npm run cdk deploy Wave2_* --app=cdk.out/dev --concurrency 10
+            command: npm run cdk -- deploy Wave2_* --app=cdk.out/dev --concurrency 10
               --require-approval never --exclusively
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
