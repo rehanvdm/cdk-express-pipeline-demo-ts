@@ -1,0 +1,52 @@
+name: CDK Express Pipeline Deploy - Prod
+on:
+  push:
+    branches:
+      - production
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build and Synth
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Synth
+        uses: ./.github/actions/cdk-express-pipeline-synth
+  deploy__prod:
+    name: Deploy prod - ${{ matrix.name }}
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      id-token: write
+    strategy:
+      matrix:
+        include:
+          - name: wave1
+            cloud-assembly-directory: cdk.out/prod
+            stack-selector-patterns: Wave1_*
+            command: npm run cdk deploy Wave1_* --app=cdk.out/prod --concurrency 10
+              --require-approval never --exclusively
+            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+            assume-region: us-east-1
+          - name: wave2
+            cloud-assembly-directory: cdk.out/prod
+            stack-selector-patterns: Wave2_*
+            command: npm run cdk deploy Wave2_* --app=cdk.out/prod --concurrency 10
+              --require-approval never --exclusively
+            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+            assume-region: us-east-1
+      fail-fast: false
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Synth
+        uses: ./.github/actions/cdk-express-pipeline-deploy
+        with:
+          stack-selector-patterns: ${{ matrix.stack-selector-patterns }}
+          cloud-assembly-directory: ${{ matrix.cloud-assembly-directory }}
+          command: ${{ matrix.command }}
+          assume-role-arn: ${{ matrix.assume-role-arn }}
+          assume-region: ${{ matrix.assume-region }}

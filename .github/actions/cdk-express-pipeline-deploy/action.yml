@@ -1,24 +1,15 @@
-name: CDK Diff Action
-description: Run CDK diff for a specific stack pattern and post results to PR
+name: CDK Deploy Action
+description: Run CDK deploy for a specific stack pattern
 inputs:
   stack-selector-patterns:
     required: true
     description: The value of the {stackSelector} replacement in the command
   command:
     required: true
-    description: CDK diff command
+    description: CDK deploy command
   cloud-assembly-directory:
     required: true
     description: The directory where the CDK cloud assembly is located
-  github-token:
-    required: true
-    description: GitHub token for posting comments
-  write-as-comment:
-    required: true
-    description: Whether to write the diff as a comment or do the command instead
-  comment-title:
-    required: true
-    description: Title for the diff comment
   assume-role-arn:
     required: true
     description: The ARN of the role to assume for the deploy operation
@@ -40,17 +31,6 @@ runs:
       with:
         role-to-assume: ${{ inputs.assume-role-arn }}
         aws-region: ${{ inputs.assume-region }}
-    - name: CDK Diff Comment
-      if: "${{ inputs.write-as-comment == true }} "
-      uses: corymhall/cdk-diff-action@v2
-      with:
-        title: ${{ inputs.comment-title }}
-        defaultStageDisplayName: "`**`"
-        stackSelectorPatterns: ${{ inputs.stack-selector-patterns }}
-        cdkOutDir: ${{ inputs.cloud-assembly-directory }}
-        githubToken: ${{ inputs.github-token }}
-        failOnDestructiveChanges: false
-    - name: CDK Diff Command
-      if: "${{ inputs.write-as-comment == false }} "
+    - name: CDK Deploy Command
       run: ${{ inputs.command }}
       shell: bash
