@@ -1,4 +1,4 @@
-name: CDK Express Pipeline Deploy - Dev 2
+name: CDK Express Pipeline Deploy - Dev
 on:
   pull_request:
     branches:
@@ -27,7 +27,7 @@ jobs:
           - name: wave1
             cloud-assembly-directory: cdk.out/dev
             stack-selector-patterns: Wave1_*
-            command: npm run cdk deploy Wave1_* --app=cdk.out/dev --concurrency 10
+            command: npm run cdk -- deploy Wave1_* --app=cdk.out/dev --concurrency 10
               --require-approval never --exclusively
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
