@@ -1,4 +1,7 @@
 name: CDK Express Pipeline Deploy - Dev
+concurrency:
+  group: cdk-express-pipeline-deploy-dev
+  cancel-in-progress: false
 on:
   pull_request:
     branches:

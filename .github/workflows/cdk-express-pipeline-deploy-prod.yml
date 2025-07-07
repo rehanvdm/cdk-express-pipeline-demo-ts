@@ -1,4 +1,7 @@
 name: CDK Express Pipeline Deploy - Prod
+concurrency:
+  group: cdk-express-pipeline-deploy-prod
+  cancel-in-progress: false
 on:
   push:
     branches:
