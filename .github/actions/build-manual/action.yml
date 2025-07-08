@@ -1,0 +1,13 @@
+name: Custom Build
+description: Only needed if Synth build step is set to 'workflow'. When able, use the `preset-` instead
+runs:
+  using: composite
+  steps:
+    - name: Set up node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: npm
+    - name: Install dependencies
+      run: npm ci
+      shell: bash

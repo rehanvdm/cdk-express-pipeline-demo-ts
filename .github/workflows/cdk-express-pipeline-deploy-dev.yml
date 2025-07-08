@@ -1,0 +1,104 @@
+name: CDK Express Pipeline Deploy - Dev
+concurrency:
+  group: cdk-express-pipeline-deploy-dev
+  cancel-in-progress: false
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build and Synth
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Synth
+        uses: ./.github/actions/cdk-express-pipeline-synth
+  deploy__dev___Wave1_Stage1_StackA:
+    name: "[dev] 📦 Wave1_Stage1_StackA"
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      id-token: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Deploy
+        uses: ./.github/actions/cdk-express-pipeline-deploy
+        with:
+          stack-selector-patterns: Wave1_Stage1_StackA
+          cloud-assembly-directory: cdk.out/dev
+          command: npm run cdk -- deploy Wave1_Stage1_StackA --app=cdk.out/dev
+            --concurrency 10 --require-approval never --exclusively
+          assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+          assume-region: us-east-1
+  deploy__dev___Wave1_Stage1_StackB:
+    name: "[dev] 📦 Wave1_Stage1_StackB"
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      id-token: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Deploy
+        uses: ./.github/actions/cdk-express-pipeline-deploy
+        with:
+          stack-selector-patterns: Wave1_Stage1_StackB
+          cloud-assembly-directory: cdk.out/dev
+          command: npm run cdk -- deploy Wave1_Stage1_StackB --app=cdk.out/dev
+            --concurrency 10 --require-approval never --exclusively
+          assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+          assume-region: us-east-1
+  deploy__dev___Wave1_Stage2_Stack2A:
+    name: "[dev] 📦 Wave1_Stage2_Stack2A"
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      id-token: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Deploy
+        uses: ./.github/actions/cdk-express-pipeline-deploy
+        with:
+          stack-selector-patterns: Wave1_Stage2_Stack2A
+          cloud-assembly-directory: cdk.out/dev
+          command: npm run cdk -- deploy Wave1_Stage2_Stack2A --app=cdk.out/dev
+            --concurrency 10 --require-approval never --exclusively
+          assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+          assume-region: us-east-1
+  deploy__dev___Wave2_Stage1_StackC:
+    name: "[dev] 📦 Wave2_Stage1_StackC"
+    needs:
+      - build
+      - deploy__dev___Wave1_Stage1_StackA
+      - deploy__dev___Wave1_Stage1_StackB
+      - deploy__dev___Wave1_Stage2_Stack2A
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      id-token: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Deploy
+        uses: ./.github/actions/cdk-express-pipeline-deploy
+        with:
+          stack-selector-patterns: Wave2_Stage1_StackC
+          cloud-assembly-directory: cdk.out/dev
+          command: npm run cdk -- deploy Wave2_Stage1_StackC --app=cdk.out/dev
+            --concurrency 10 --require-approval never --exclusively
+          assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+          assume-region: us-east-1
