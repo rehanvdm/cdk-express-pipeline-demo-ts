@@ -15,8 +15,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
-  deploy__dev___wave1__stage1:
-    name: Deploy dev - Wave1_Stage1
+  deploy__dev___wave1__stage1__wave1__stage1__stack__a:
+    name: Deploy dev - Wave1_Stage1_Wave1_Stage1_StackA
     needs:
       - build
     runs-on: ubuntu-latest
@@ -30,17 +30,16 @@ jobs:
       - name: Run CDK Express Pipeline Deploy
         uses: ./.github/actions/cdk-express-pipeline-deploy
         with:
-          stack-selector-patterns: Wave1_Stage1_*
+          stack-selector-patterns: Wave1_Stage1_StackA
           cloud-assembly-directory: cdk.out/dev
-          command: npm run cdk -- deploy Wave1_Stage1_* --app=cdk.out/dev --concurrency 10
-            --require-approval never --exclusively
+          command: npm run cdk -- deploy Wave1_Stage1_StackA --app=cdk.out/dev
+            --concurrency 10 --require-approval never --exclusively
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
-  deploy__dev___wave1__stage2:
-    name: Deploy dev - Wave1_Stage2
+  deploy__dev___wave1__stage1__wave1__stage1__stack__b:
+    name: Deploy dev - Wave1_Stage1_Wave1_Stage1_StackB
     needs:
       - build
-      - deploy__dev___wave1__stage1
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -52,18 +51,16 @@ jobs:
       - name: Run CDK Express Pipeline Deploy
         uses: ./.github/actions/cdk-express-pipeline-deploy
         with:
-          stack-selector-patterns: Wave1_Stage2_*
+          stack-selector-patterns: Wave1_Stage1_StackB
           cloud-assembly-directory: cdk.out/dev
-          command: npm run cdk -- deploy Wave1_Stage2_* --app=cdk.out/dev --concurrency 10
-            --require-approval never --exclusively
+          command: npm run cdk -- deploy Wave1_Stage1_StackB --app=cdk.out/dev
+            --concurrency 10 --require-approval never --exclusively
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
-  deploy__dev___wave2__stage1:
-    name: Deploy dev - Wave2_Stage1
+  deploy__dev___wave1__stage2__wave1__stage2__stack2_a:
+    name: Deploy dev - Wave1_Stage2_Wave1_Stage2_Stack2A
     needs:
       - build
-      - deploy__dev___wave1__stage1
-      - deploy__dev___wave1__stage2
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -75,9 +72,33 @@ jobs:
       - name: Run CDK Express Pipeline Deploy
         uses: ./.github/actions/cdk-express-pipeline-deploy
         with:
-          stack-selector-patterns: Wave2_Stage1_*
+          stack-selector-patterns: Wave1_Stage2_Stack2A
           cloud-assembly-directory: cdk.out/dev
-          command: npm run cdk -- deploy Wave2_Stage1_* --app=cdk.out/dev --concurrency 10
-            --require-approval never --exclusively
+          command: npm run cdk -- deploy Wave1_Stage2_Stack2A --app=cdk.out/dev
+            --concurrency 10 --require-approval never --exclusively
+          assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+          assume-region: us-east-1
+  deploy__dev___wave2__stage1__wave2__stage1__stack__c:
+    name: Deploy dev - Wave2_Stage1_Wave2_Stage1_StackC
+    needs:
+      - build
+      - deploy__dev___wave1__stage1__wave1__stage1__stack__a
+      - deploy__dev___wave1__stage1__wave1__stage1__stack__b
+      - deploy__dev___wave1__stage2__wave1__stage2__stack2_a
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      id-token: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Deploy
+        uses: ./.github/actions/cdk-express-pipeline-deploy
+        with:
+          stack-selector-patterns: Wave2_Stage1_StackC
+          cloud-assembly-directory: cdk.out/dev
+          command: npm run cdk -- deploy Wave2_Stage1_StackC --app=cdk.out/dev
+            --concurrency 10 --require-approval never --exclusively
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
