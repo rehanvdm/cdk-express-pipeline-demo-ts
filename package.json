@@ -6,6 +6,7 @@
   },
   "scripts": {
     "cdk": "cdk",
+    "cdk:ls": "cdk ls",
     "build": "tsc",
     "watch": "tsc -w",
     "diff": "cdk diff '**' --profile rehan-demo-exported",

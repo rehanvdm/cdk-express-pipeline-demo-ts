@@ -39,3 +39,41 @@ expressPipeline.synth([
   wave1,
   wave2,
 ]);
+
+expressPipeline.generateGitHubWorkflows({
+  synth: {
+    buildConfig: {
+      type: 'preset-npm',
+    },
+    commands: [
+      { default: "npm run cdk -- synth '**'" },
+    ],
+  },
+  diff: [{
+    on: {
+      pullRequest: {
+        branches: ['main'],
+      },
+    },
+    stackSelector: 'wave',
+    writeAsComment: true,
+    assumeRoleArn: 'arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role',
+    assumeRegion: 'us-east-1',
+    commands: [
+      { default: 'npm run cdk -- diff {stackSelector}' },
+    ],
+  }],
+  deploy: [{
+    on: {
+      pullRequest: {
+        branches: ['main'],
+      },
+    },
+    stackSelector: 'stack',
+    assumeRoleArn: 'arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role',
+    assumeRegion: 'us-east-1',
+    commands: [
+      { default: 'npm run cdk -- deploy {stackSelector} --concurrency 10 --require-approval never --exclusively' },
+    ],
+  }]
+});
