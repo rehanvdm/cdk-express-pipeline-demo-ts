@@ -1,4 +1,4 @@
-name: CDK Express Pipeline Diff
+name: CDK Express Pipeline Diff - Dev
 on:
   pull_request:
     branches:
