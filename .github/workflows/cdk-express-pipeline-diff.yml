@@ -13,8 +13,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
-  diff__diff:
-    name: Diff diff - ${{ matrix.name }}
+  diff__default:
+    name: Diff default - ${{ matrix.name }}
     needs:
       - build
     runs-on: ubuntu-latest
@@ -51,7 +51,7 @@ jobs:
           cloud-assembly-directory: ${{ matrix.cloud-assembly-directory }}
           command: ${{ matrix.command }}
           write-as-comment: ${{ matrix.write-as-comment }}
-          comment-title: "CDK Diff: diff - ${{ matrix.name }}"
+          comment-title: "CDK Diff: default - ${{ matrix.name }}"
           github-token: ${{ secrets.GITHUB_TOKEN }}
           assume-role-arn: ${{ matrix.assume-role-arn }}
           assume-region: ${{ matrix.assume-region }}
