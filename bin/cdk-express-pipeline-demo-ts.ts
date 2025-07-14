@@ -59,7 +59,7 @@ expressPipeline.generateGitHubWorkflows({
   }],
   deploy: [{
     on: {
-      pullRequest: {
+      push: {
         branches: ['main'],
       },
     },
