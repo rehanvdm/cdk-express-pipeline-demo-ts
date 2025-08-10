@@ -43,10 +43,10 @@ runs:
         aws-region: ${{ inputs.assume-region }}
 
     - name: CDK Diff Generate
-      uses: rehanvdm/cdk-express-pipeline-github-diff@f590ce1391e8c98c7b325b88f082c7a6839da7f9
+      uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
       with:
         mode: generate
-        cloud-assembly-directory: {{ inputs.cloud-assembly-directory }}
+        cloud-assembly-directory: ${{ inputs.cloud-assembly-directory }}
         stack-selectors: "`**`"
 
     - name: CDK Diff Output
