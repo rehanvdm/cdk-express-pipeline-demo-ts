@@ -47,7 +47,7 @@ runs:
       with:
         mode: generate
         cloud-assembly-directory: ${{ inputs.cloud-assembly-directory }}
-        stack-selectors: "`**`"
+        stack-selectors: '**'
 
     - name: CDK Diff Output
       uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
