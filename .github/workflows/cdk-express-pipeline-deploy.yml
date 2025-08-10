@@ -4,7 +4,7 @@ concurrency:
   group: cdk-express-pipeline-deploy
   cancel-in-progress: false
 on:
-  pull_request:
+  push:
     branches:
       - main
 jobs:
@@ -16,8 +16,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
-  deploy__deploy___Wave1_Stage1_StackA:
-    name: "[deploy] 📦 Wave1_Stage1_StackA"
+  deploy__default___Wave1_Stage1_StackA:
+    name: "[default] 📦 Wave1_Stage1_StackA"
     needs:
       - build
     runs-on: ubuntu-latest
@@ -37,8 +37,8 @@ jobs:
             --require-approval never --exclusively
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
-  deploy__deploy___Wave1_Stage1_StackB:
-    name: "[deploy] 📦 Wave1_Stage1_StackB"
+  deploy__default___Wave1_Stage1_StackB:
+    name: "[default] 📦 Wave1_Stage1_StackB"
     needs:
       - build
     runs-on: ubuntu-latest
@@ -58,12 +58,12 @@ jobs:
             --require-approval never --exclusively
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
-  deploy__deploy___Wave2_Stage1_StackC:
-    name: "[deploy] 📦 Wave2_Stage1_StackC"
+  deploy__default___Wave2_Stage1_StackC:
+    name: "[default] 📦 Wave2_Stage1_StackC"
     needs:
       - build
-      - deploy__deploy___Wave1_Stage1_StackA
-      - deploy__deploy___Wave1_Stage1_StackB
+      - deploy__default___Wave1_Stage1_StackA
+      - deploy__default___Wave1_Stage1_StackB
     runs-on: ubuntu-latest
     permissions:
       actions: write
