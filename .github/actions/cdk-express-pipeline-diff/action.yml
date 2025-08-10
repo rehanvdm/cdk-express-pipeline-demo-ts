@@ -46,12 +46,12 @@ runs:
       uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
       with:
         mode: generate
-        cloud_assembly_directory: {{ inputs.cloud-assembly-directory }}
-        stack_selectors: "`**`"
+        cloud-assembly-directory: {{ inputs.cloud-assembly-directory }}
+        stack-selectors: "`**`"
 
     - name: CDK Diff Output
       uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
       with:
         mode: print
-        githubToken: ${{ inputs.github-token }}
+        github-token: ${{ inputs.github-token }}
 
