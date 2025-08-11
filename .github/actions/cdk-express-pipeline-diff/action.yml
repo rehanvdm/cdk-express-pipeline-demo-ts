@@ -55,9 +55,8 @@ runs:
     - name: Debug
       shell: bash
       run: |
-        ls -lsha ${{ inputs.cloud-assembly-directory }}
-        ls -lsha ${{ inputs.cloud-assembly-directory }}/cdk-express-pipeline
-        cat ${{ inputs.cloud-assembly-directory }}/cdk-express-pipeline.json
+        ls -lsha ${{ inputs.cloud-assembly-directory }}/cdk-express-pipeline/diffs
+ 
 
     - name: CDK Diff Output
       uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
