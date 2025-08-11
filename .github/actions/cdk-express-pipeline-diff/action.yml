@@ -44,6 +44,9 @@ runs:
 
     - name: CDK Diff Generate
       uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
+      env:
+        CDK_DEBUG: true
+        CDK_VERBOSE: true
       with:
         mode: generate
         cloud-assembly-directory: ${{ inputs.cloud-assembly-directory }}
