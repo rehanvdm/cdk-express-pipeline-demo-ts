@@ -56,6 +56,8 @@ runs:
       shell: bash
       run: |
         ls -lsha ${{ inputs.cloud-assembly-directory }}/cdk-express-pipeline/diffs
+        cat ${{ inputs.cloud-assembly-directory }}/cdk-express-pipeline/diffs/Wave1_Stage1_StackA (StackA).json
+        cat ${{ inputs.cloud-assembly-directory }}/cdk-express-pipeline/diffs/*.json || true
  
 
     - name: CDK Diff Output
