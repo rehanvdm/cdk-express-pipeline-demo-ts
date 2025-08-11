@@ -53,8 +53,8 @@ runs:
         stack-selectors: "**"
 
     - name: Debug
-      run: |
-        ls -lsha ${{ inputs.cloud-assembly-directory }}
+      shell: bash
+      run: ls -lsha ${{ inputs.cloud-assembly-directory }}
 
     - name: CDK Diff Output
       uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
