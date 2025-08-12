@@ -59,7 +59,7 @@ jobs:
   print_diff:
     name: "Print Diff"
     needs:
-      - build
+      - diff__default
     runs-on: ubuntu-latest
     permissions:
       actions: write
