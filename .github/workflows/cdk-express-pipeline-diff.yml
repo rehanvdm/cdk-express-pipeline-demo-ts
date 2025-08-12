@@ -55,3 +55,20 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           assume-role-arn: ${{ matrix.assume-role-arn }}
           assume-region: ${{ matrix.assume-region }}
+
+  print_diff:
+    name: "Print Diff"
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: CDK Diff Output
+        uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
+        with:
+          mode: print
+          cloud-assembly-directory: cdk.out
+          github-token: ${{ secrets.GITHUB_TOKEN }}

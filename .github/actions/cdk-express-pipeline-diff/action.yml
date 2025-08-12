@@ -44,27 +44,8 @@ runs:
 
     - name: CDK Diff Generate
       uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
-      env:
-        CDK_DEBUG: true
-        CDK_VERBOSE: true
       with:
         mode: generate
         cloud-assembly-directory: ${{ inputs.cloud-assembly-directory }}
         stack-selectors: "**"
-
-    - name: Debug
-      shell: bash
-      run: |
-        ls -lsha ${{ inputs.cloud-assembly-directory }}/cdk-express-pipeline/diffs
-        cat ${{ inputs.cloud-assembly-directory }}/cdk-express-pipeline.json
-        cat ${{ inputs.cloud-assembly-directory }}/cdk-express-pipeline/diffs/*.json || true
-
- 
-
-    - name: CDK Diff Output
-      uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
-      with:
-        mode: print
-        cloud-assembly-directory: ${{ inputs.cloud-assembly-directory }}
-        github-token: ${{ inputs.github-token }}
 
