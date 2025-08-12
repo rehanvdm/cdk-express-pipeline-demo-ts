@@ -47,5 +47,5 @@ runs:
       with:
         mode: generate
         cloud-assembly-directory: ${{ inputs.cloud-assembly-directory }}
-        stack-selectors: "**"
+        stack-selectors: ${{ inputs.stack-selector-patterns }}
 
