@@ -48,4 +48,5 @@ runs:
         mode: generate
         cloud-assembly-directory: ${{ inputs.cloud-assembly-directory }}
         stack-selectors: ${{ inputs.stack-selector-patterns }}
+        github-token: ${{ inputs.github-token }}
 
