@@ -14,7 +14,7 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
   diff__default:
-    name: Diff default - ${{ matrix.name }}
+    name: ${{ matrix.job-name }}
     needs:
       - build
     runs-on: ubuntu-latest
@@ -26,14 +26,14 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: wave1
+          - job-name: Diff default - wave1
             cloud-assembly-directory: cdk.out
             stack-selector-patterns: Wave1_*
             command: npm run cdk -- diff Wave1_*
             write-as-comment: true
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
-          - name: wave2
+          - job-name: Diff default - wave2
             cloud-assembly-directory: cdk.out
             stack-selector-patterns: Wave2_*
             command: npm run cdk -- diff Wave2_*
@@ -47,11 +47,10 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-diff
         with:
+          job-name: ${{ matrix.job-name }}
           stack-selector-patterns: ${{ matrix.stack-selector-patterns }}
           cloud-assembly-directory: ${{ matrix.cloud-assembly-directory }}
           command: ${{ matrix.command }}
-          write-as-comment: ${{ matrix.write-as-comment }}
-          comment-title: "CDK Diff: default - ${{ matrix.name }}"
           github-token: ${{ secrets.GITHUB_TOKEN }}
           assume-role-arn: ${{ matrix.assume-role-arn }}
           assume-region: ${{ matrix.assume-region }}

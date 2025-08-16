@@ -14,18 +14,15 @@ inputs:
   github-token:
     required: true
     description: GitHub token for posting comments
-  write-as-comment:
-    required: true
-    description: Whether to write the diff as a comment or do the command instead
-  comment-title:
-    required: true
-    description: Title for the diff comment
   assume-role-arn:
     required: true
     description: The ARN of the role to assume for the deploy operation
   assume-region:
     required: true
     description: The AWS region to assume for the deploy operation
+  job-name:
+    required: false
+    description: The name of the job, to correctly link to the action logs when using a Matrix.
 runs:
   using: composite
   steps:
@@ -49,4 +46,5 @@ runs:
         cloud-assembly-directory: ${{ inputs.cloud-assembly-directory }}
         stack-selectors: ${{ inputs.stack-selector-patterns }}
         github-token: ${{ inputs.github-token }}
+        job-name: ${{ inputs.job-name }}
 
