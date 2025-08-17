@@ -36,7 +36,7 @@ jobs:
           aws-region: eu-west-1
 
       - name: CDK diff
-        run: npm run cdk -- diff '**'
+        run: npm run cdk -- synth '**'
 
       - name: CDK Diff Generate
         uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
