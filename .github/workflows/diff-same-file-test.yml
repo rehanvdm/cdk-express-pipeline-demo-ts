@@ -10,7 +10,7 @@ jobs:
     name: CDK Diff and Deploy
     runs-on: ubuntu-latest
     permissions:
-      actions: write
+      pull-requests: write
       contents: read
       id-token: write
     steps:
