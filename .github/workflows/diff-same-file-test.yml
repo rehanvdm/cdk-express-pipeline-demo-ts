@@ -2,7 +2,7 @@ name: Diff Same File
 on:
   pull_request:
     branches:
-      - main
+      - mainSKIPPP
   workflow_dispatch: {}
 
 jobs:
