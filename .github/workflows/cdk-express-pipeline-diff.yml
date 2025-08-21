@@ -3,7 +3,7 @@ name: CDK Express Pipeline Diff
 on:
   pull_request:
     branches:
-      - main
+      - mainSKIPP
 jobs:
   build:
     runs-on: ubuntu-latest
