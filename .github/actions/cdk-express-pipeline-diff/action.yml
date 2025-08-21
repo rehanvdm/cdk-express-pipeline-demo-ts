@@ -29,7 +29,7 @@ runs:
     - name: Restore Build Cache
       uses: actions/cache/restore@v4
       with:
-        key: cache-build-${{ github.sha }}
+        key: cache-build-${{ github.sha }}-${{ inputs.cloud-assembly-directory }}
         path: |-
           cdk.out/
           node_modules/

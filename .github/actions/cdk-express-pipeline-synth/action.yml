@@ -23,7 +23,7 @@ runs:
     - name: Cache Build
       uses: actions/cache/save@v4
       with:
-        key: cache-build-${{ github.sha }}
+        key: cache-build-${{ github.sha }}-${{ inputs.output }}
         path: |-
           cdk.out/
           node_modules/
