@@ -11,9 +11,16 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-      - name: Run CDK Express Pipeline Synth
+      - name: Synth Dev
         uses: ./.github/actions/cdk-express-pipeline-synth
-  diff__default:
+        with:
+          output: cdk.out/dev
+      - name: Synth Prod
+        uses: ./.github/actions/cdk-express-pipeline-synth
+        with:
+          output: cdk.out/prod
+
+  diff__dev:
     name: ${{ matrix.job-name }}
     needs:
       - build
@@ -26,15 +33,57 @@ jobs:
     strategy:
       matrix:
         include:
-          - job-name: Diff default - wave1
-            cloud-assembly-directory: cdk.out
+          - job-name: Diff Dev - wave1
+            cloud-assembly-directory: cdk.out/dev
+            stack-selector-patterns: Wave1_*
+            command: npm run cdk -- diff Wave1_* --output cdk.out/dev
+            write-as-comment: true
+            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+            assume-region: us-east-1
+          - job-name: Diff Dev - wave2
+            cloud-assembly-directory: cdk.out/dev
+            stack-selector-patterns: Wave2_*
+            command: npm run cdk -- diff Wave2_* --output cdk.out/dev
+            write-as-comment: true
+            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+            assume-region: us-east-1
+      fail-fast: false
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Synth
+        uses: ./.github/actions/cdk-express-pipeline-diff
+        with:
+          job-name: ${{ matrix.job-name }}
+          stack-selector-patterns: ${{ matrix.stack-selector-patterns }}
+          cloud-assembly-directory: ${{ matrix.cloud-assembly-directory }}
+          command: ${{ matrix.command }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          assume-role-arn: ${{ matrix.assume-role-arn }}
+          assume-region: ${{ matrix.assume-region }}
+
+  diff__prod:
+    name: ${{ matrix.job-name }}
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      id-token: write
+      pull-requests: write
+    strategy:
+      matrix:
+        include:
+          - job-name: Diff Prod - wave1
+            cloud-assembly-directory: cdk.out/prod
             stack-selector-patterns: Wave1_*
             command: npm run cdk -- diff Wave1_*
             write-as-comment: true
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
-          - job-name: Diff default - wave2
-            cloud-assembly-directory: cdk.out
+          - job-name: Diff Prod - wave2
+            cloud-assembly-directory: cdk.out/prod
             stack-selector-patterns: Wave2_*
             command: npm run cdk -- diff Wave2_*
             write-as-comment: true
@@ -55,10 +104,12 @@ jobs:
           assume-role-arn: ${{ matrix.assume-role-arn }}
           assume-region: ${{ matrix.assume-region }}
 
+
   print_diff:
     name: "Print Diff"
     needs:
-      - diff__default
+      - diff__dev
+      - diff__prod
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -69,5 +120,9 @@ jobs:
         uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
         with:
           mode: print
-          cloud-assembly-directory: cdk.out
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          cloud-assemblies: |
+            - heading: CDK Diff Development
+              directory: cdk.out/dev
+            - heading: CDK Diff Production
+              directory: cdk.out/prod
