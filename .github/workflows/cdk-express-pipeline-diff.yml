@@ -14,11 +14,11 @@ jobs:
       - name: Synth Dev
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
-          output: cdk.out/dev
+          cdk-output: cdk.out/dev
       - name: Synth Prod
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
-          output: cdk.out/prod
+          cdk-output: cdk.out/prod
 
   diff__dev:
     name: ${{ matrix.job-name }}
