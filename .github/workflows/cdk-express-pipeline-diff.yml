@@ -117,7 +117,7 @@ jobs:
           mode: print
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cloud-assemblies: |
-            - heading: CDK Diff Development
+            - header: CDK Diff Development
               directory: cdk.out/dev
-            - heading: CDK Diff Production
+            - header: CDK Diff Production
               directory: cdk.out/prod
