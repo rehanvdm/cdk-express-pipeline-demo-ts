@@ -14,25 +14,22 @@ inputs:
   github-token:
     required: true
     description: GitHub token for posting comments
-  write-as-comment:
-    required: true
-    description: Whether to write the diff as a comment or do the command instead
-  comment-title:
-    required: true
-    description: Title for the diff comment
   assume-role-arn:
     required: true
     description: The ARN of the role to assume for the deploy operation
   assume-region:
     required: true
     description: The AWS region to assume for the deploy operation
+  job-name:
+    required: false
+    description: The name of the job, to correctly link to the action logs when using a Matrix.
 runs:
   using: composite
   steps:
     - name: Restore Build Cache
       uses: actions/cache/restore@v4
       with:
-        key: cache-build-${{ github.sha }}
+        key: cache-build-${{ github.sha }}-${{ inputs.cloud-assembly-directory }}
         path: |-
           cdk.out/
           node_modules/
@@ -41,17 +38,13 @@ runs:
       with:
         role-to-assume: ${{ inputs.assume-role-arn }}
         aws-region: ${{ inputs.assume-region }}
-    - name: CDK Diff Comment
-      if: "${{ inputs.write-as-comment == true }} "
-      uses: corymhall/cdk-diff-action@v2
+
+    - name: CDK Diff Generate
+      uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
       with:
-        title: ${{ inputs.comment-title }}
-        defaultStageDisplayName: "`**`"
-        stackSelectorPatterns: ${{ inputs.stack-selector-patterns }}
-        cdkOutDir: ${{ inputs.cloud-assembly-directory }}
-        githubToken: ${{ inputs.github-token }}
-        failOnDestructiveChanges: false
-    - name: CDK Diff Command
-      if: "${{ inputs.write-as-comment == false }} "
-      run: ${{ inputs.command }}
-      shell: bash
+        mode: generate
+        cloud-assembly-directory: ${{ inputs.cloud-assembly-directory }}
+        stack-selectors: ${{ inputs.stack-selector-patterns }}
+        github-token: ${{ inputs.github-token }}
+        job-name: ${{ inputs.job-name }}
+

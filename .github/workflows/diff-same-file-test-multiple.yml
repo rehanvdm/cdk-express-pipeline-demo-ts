@@ -1,0 +1,65 @@
+name: Diff Multiple Assemblies
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+jobs:
+  diff-envs:
+    name: CDK Diff Environments
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      id-token: write
+    strategy:
+      matrix:
+        include:
+          - cloud-assembly-directory: cdk.out/dev
+          - cloud-assembly-directory: cdk.out/prod
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install dependencies
+        run: npm install ci
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+          aws-region: eu-west-1
+
+      - name: CDK Synth
+        run: npm run cdk -- synth '**' --output ${{ matrix.cloud-assembly-directory }}
+      - name: CDK Diff Generate Dev
+        uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
+        with:
+          mode: generate
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          cloud-assembly-directory: ${{ matrix.cloud-assembly-directory }}
+
+  print-diffs:
+    name: CDK Diff and Deploy
+    runs-on: ubuntu-latest
+    needs:
+      - diff-envs
+    permissions:
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: CDK Diff Output
+        uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
+        with:
+          mode: print
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          cloud-assemblies: |
+            - header: CDK Diff Development
+              directory: cdk.out/dev
+            - header: CDK Diff Production
+              directory: cdk.out/prod

@@ -1,0 +1,51 @@
+name: Diff Same File
+on:
+  pull_request:
+    branches:
+      - mainSKIPPP
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    name: CDK Diff and Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install ci
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+          aws-region: eu-west-1
+
+      - name: CDK diff
+        run: npm run cdk -- synth '**'
+
+      - name: CDK Diff Generate
+        uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
+        with:
+          mode: generate
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+#          stack-selector-patterns: '**'
+#          cloud-assembly-directory: 'cdk.out'
+#          job-name: ""
+
+      - name: CDK Diff Output
+        uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
+        with:
+          mode: print
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+#          cloud-assembly-directory: cdk.out
