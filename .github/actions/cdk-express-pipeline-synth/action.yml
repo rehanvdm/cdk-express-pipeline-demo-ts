@@ -3,6 +3,7 @@ name: CDK Express Pipeline Synth Action
 inputs:
   cdk-output:
     description: The directory to use as --output
+    required: false
     default: cdk.out
 runs:
   using: composite
