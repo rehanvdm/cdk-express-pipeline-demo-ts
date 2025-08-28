@@ -40,7 +40,7 @@ runs:
         aws-region: ${{ inputs.assume-region }}
 
     - name: CDK Diff Generate
-      uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
+      uses: rehanvdm/cdk-express-pipeline-github-diff@feature/change-diff-strategy
       with:
         mode: generate
         cloud-assembly-directory: ${{ inputs.cloud-assembly-directory }}

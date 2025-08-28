@@ -119,7 +119,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: CDK Diff Output
-        uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
+        uses: rehanvdm/cdk-express-pipeline-github-diff@feature/change-diff-strategy
         with:
           mode: print
           github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -35,7 +35,7 @@ jobs:
         run: npm run cdk -- synth '**'
 
       - name: CDK Diff Generate
-        uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
+        uses: rehanvdm/cdk-express-pipeline-github-diff@feature/change-diff-strategy
         with:
           mode: generate
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -44,7 +44,7 @@ jobs:
 #          job-name: ""
 
       - name: CDK Diff Output
-        uses: rehanvdm/cdk-express-pipeline-github-diff@feature/init
+        uses: rehanvdm/cdk-express-pipeline-github-diff@feature/change-diff-strategy
         with:
           mode: print
           github-token: ${{ secrets.GITHUB_TOKEN }}
