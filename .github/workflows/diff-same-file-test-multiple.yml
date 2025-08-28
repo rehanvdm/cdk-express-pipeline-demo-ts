@@ -16,7 +16,7 @@ jobs:
       matrix:
         include:
           - cloud-assembly-directory: cdk.out/dev
-          - cloud-assembly-directory: cdk.out/prod
+#          - cloud-assembly-directory: cdk.out/prod
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -61,5 +61,5 @@ jobs:
           cloud-assemblies: |
             - header: CDK Diff Development
               directory: cdk.out/dev
-            - header: CDK Diff Production
-              directory: cdk.out/prod
+#            - header: CDK Diff Production
+#              directory: cdk.out/prod
