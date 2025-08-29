@@ -41,6 +41,10 @@ jobs:
           mode: generate
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cloud-assembly-directory: ${{ matrix.cloud-assembly-directory }}
+          diff-rules: |
+            - name: hide-all-sns-resources 
+              type: HIDE_RESOURCE 
+              path: AWS::SNS::Topic.*.DisplayName
 
   print-diffs:
     name: CDK Diff and Deploy
