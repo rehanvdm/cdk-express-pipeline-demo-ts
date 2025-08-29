@@ -41,9 +41,12 @@ jobs:
           mode: generate
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cloud-assembly-directory: ${{ matrix.cloud-assembly-directory }}
+#            - name: hide-all-sns-resources
+#              type: HIDE_RESOURCE
+#              path: AWS::SNS::Topic.*.DisplayName
           diff-rules: |
             - name: hide-all-sns-resources 
-              type: HIDE_RESOURCE 
+              type: HIDE_PROPERTIES 
               path: AWS::SNS::Topic.*.DisplayName
 
   print-diffs:
