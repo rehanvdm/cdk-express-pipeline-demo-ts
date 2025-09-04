@@ -1,5 +1,4 @@
 name: CDK Diff Action
-description: Run CDK diff for a specific stack pattern and post results to PR
 inputs:
   stack-selector-patterns:
     required: true
@@ -38,7 +37,7 @@ runs:
         role-to-assume: ${{ inputs.assume-role-arn }}
         aws-region: ${{ inputs.assume-region }}
     - name: CDK Diff Generate
-      uses: rehanvdm/cdk-express-pipeline-github-diff@feature/improve-cache
+      uses: rehanvdm/cdk-express-pipeline-github-diff@v0.1.2
       with:
         mode: generate
         cloud-assembly-directory: ${{ inputs.cloud-assembly-directory }}

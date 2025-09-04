@@ -13,9 +13,8 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
-          command: npm run cdk -- synth --all --output=cdk.out/dev
+          command: npm run cdk -- synth '**' -c env=dev --output=cdk.out/dev
           cloud-assembly-directory: cdk.out/dev
-
   diff__dev:
     name: ${{ matrix.job-name }}
     needs:
@@ -61,7 +60,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           assume-role-arn: ${{ matrix.assume-role-arn }}
           assume-region: ${{ matrix.assume-region }}
-
   synth__prod:
     name: Synth prod
     runs-on: ubuntu-latest
@@ -71,9 +69,8 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
-          command: npm run cdk -- synth --all --output=cdk.out/prod
+          command: npm run cdk -- synth '**' -c env=prod --output=cdk.out/prod
           cloud-assembly-directory: cdk.out/prod
-
   diff__prod:
     name: ${{ matrix.job-name }}
     needs:
@@ -119,23 +116,19 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           assume-role-arn: ${{ matrix.assume-role-arn }}
           assume-region: ${{ matrix.assume-region }}
-
   print_diff:
     name: Print Diff
     runs-on: ubuntu-latest
-    permissions:
-      actions: write
-      contents: read
-      id-token: write
-      pull-requests: write
     needs:
+      - synth__dev
       - diff__dev
+      - synth__prod
       - diff__prod
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Update PR Description
-        uses: rehanvdm/cdk-express-pipeline-github-diff@feature/improve-cache
+        uses: rehanvdm/cdk-express-pipeline-github-diff@v0.1.2
         with:
           mode: print
           github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -5,16 +5,8 @@ concurrency:
 on:
   push:
     branches:
-      - productionSKIPP
+      - production
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    name: Build and Synth
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-#      - name: Run CDK Express Pipeline Synth
-#        uses: ./.github/actions/cdk-express-pipeline-synth
   deploy__prod___Wave1_Stage1_StackA:
     name: "[prod] 📦 Wave1_Stage1_StackA"
     needs:
