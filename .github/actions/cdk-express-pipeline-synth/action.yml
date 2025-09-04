@@ -6,6 +6,7 @@ inputs:
   cloud-assembly-directory:
     required: true
     description: The directory where the CDK cloud assembly should be synthesized to, must be the same as specified in the command
+    default: cdk.out
 runs:
   using: composite
   steps:
@@ -27,5 +28,5 @@ runs:
       with:
         key: cache-build-${{ github.sha }}-${{ inputs.cloud-assembly-directory }}
         path: |-
-          cdk.out/
+          ${{ inputs.cloud-assembly-directory }}/
           node_modules/
