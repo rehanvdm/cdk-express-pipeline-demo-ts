@@ -119,6 +119,11 @@ jobs:
   print_diff:
     name: Print Diff
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      id-token: write
+      pull-requests: write
     needs:
       - synth__dev
       - diff__dev
