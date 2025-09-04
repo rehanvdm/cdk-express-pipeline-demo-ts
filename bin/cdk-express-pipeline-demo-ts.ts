@@ -33,6 +33,7 @@ expressPipeline.synth([
   wave1,
   wave2,
 ]);
+app.synth();
 
 expressPipeline.generateGitHubWorkflows({
   synth: {
