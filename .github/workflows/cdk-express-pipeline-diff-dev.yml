@@ -4,32 +4,22 @@ on:
     branches:
       - main
 jobs:
-  build:
-    name: ${{ matrix.job-name }}
+  synth__dev:
+    name: Synth dev
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - job-name: Build and Synth dev
-            command: npm run cdk -- synth --all --output=cdk.out/dev
-            cloud-assembly-directory: cdk.out/dev
-          - job-name: Build and Synth prod
-            command: npm run cdk -- synth --all --output=cdk.out/prod
-            cloud-assembly-directory: cdk.out/prod
-      fail-fast: false
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
-          command: ${{ matrix.command }}
-          cloud-assembly-directory: ${{ matrix.cloud-assembly-directory }}
+          command: npm run cdk -- synth --all --output=cdk.out/dev
+          cloud-assembly-directory: cdk.out/dev
 
   diff__dev:
     name: ${{ matrix.job-name }}
     needs:
-      - build
+      - synth__dev
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -71,10 +61,23 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           assume-role-arn: ${{ matrix.assume-role-arn }}
           assume-region: ${{ matrix.assume-region }}
+
+  synth__prod:
+    name: Synth prod
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Synth
+        uses: ./.github/actions/cdk-express-pipeline-synth
+        with:
+          command: npm run cdk -- synth --all --output=cdk.out/prod
+          cloud-assembly-directory: cdk.out/prod
+
   diff__prod:
     name: ${{ matrix.job-name }}
     needs:
-      - build
+      - synth__prod
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -116,6 +119,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           assume-role-arn: ${{ matrix.assume-role-arn }}
           assume-region: ${{ matrix.assume-region }}
+
   print_diff:
     name: Print Diff
     runs-on: ubuntu-latest
