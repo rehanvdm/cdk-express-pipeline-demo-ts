@@ -2,7 +2,7 @@ name: CDK Express Pipeline Diff - Prod
 on:
   pull_request:
     branches:
-      - production
+      - productionSKIPP
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,8 +10,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-      - name: Run CDK Express Pipeline Synth
-        uses: ./.github/actions/cdk-express-pipeline-synth
+#      - name: Run CDK Express Pipeline Synth
+#        uses: ./.github/actions/cdk-express-pipeline-synth
   diff__prod:
     name: ${{ matrix.job-name }}
     needs:

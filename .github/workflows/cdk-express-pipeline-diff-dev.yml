@@ -5,13 +5,27 @@ on:
       - main
 jobs:
   build:
+    name: ${{ matrix.job-name }}
     runs-on: ubuntu-latest
-    name: Build and Synth
+    strategy:
+      matrix:
+        include:
+          - job-name: Build and Synth dev
+            command: npm run cdk -- synth --all --app=cdk.out/dev
+            cloud-assembly-directory: cdk.out/dev
+          - job-name: Build and Synth prod
+            command: npm run cdk -- synth --all --app=cdk.out/prod
+            cloud-assembly-directory: cdk.out/prod
+      fail-fast: false
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
+        with:
+          command: ${{ matrix.command }}
+          cloud-assembly-directory: ${{ matrix.cloud-assembly-directory }}
+
   diff__dev:
     name: ${{ matrix.job-name }}
     needs:
