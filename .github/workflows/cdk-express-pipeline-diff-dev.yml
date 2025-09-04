@@ -11,10 +11,10 @@ jobs:
       matrix:
         include:
           - job-name: Build and Synth dev
-            command: npm run cdk -- synth --all --app=cdk.out/dev
+            command: npm run cdk -- synth --all --output=cdk.out/dev
             cloud-assembly-directory: cdk.out/dev
           - job-name: Build and Synth prod
-            command: npm run cdk -- synth --all --app=cdk.out/prod
+            command: npm run cdk -- synth --all --output=cdk.out/prod
             cloud-assembly-directory: cdk.out/prod
       fail-fast: false
     steps:
