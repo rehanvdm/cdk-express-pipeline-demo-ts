@@ -66,7 +66,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Update PR Description
-        uses: rehanvdm/cdk-express-pipeline-github-diff@v0.1.2
+        uses: rehanvdm/cdk-express-pipeline-github-diff@feature/improve-cache
         with:
           mode: print
           github-token: ${{ secrets.GITHUB_TOKEN }}
