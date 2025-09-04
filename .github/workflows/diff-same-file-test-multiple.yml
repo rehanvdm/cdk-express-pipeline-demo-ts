@@ -68,5 +68,5 @@ jobs:
           cloud-assemblies: |
             - header: CDK Diff Development
               directory: cdk.out/dev
-#            - header: CDK Diff Production
-#              directory: cdk.out/prod
+            - header: CDK Diff Production
+              directory: cdk.out/prod
