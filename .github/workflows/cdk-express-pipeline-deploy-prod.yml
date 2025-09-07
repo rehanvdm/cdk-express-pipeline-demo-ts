@@ -5,7 +5,7 @@ concurrency:
 on:
   push:
     branches:
-      - production
+      - main
 jobs:
   synth__prod:
     name: Synth prod
