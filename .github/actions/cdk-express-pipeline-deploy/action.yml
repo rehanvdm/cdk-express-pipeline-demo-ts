@@ -23,9 +23,9 @@ runs:
     - name: Restore Build Cache
       uses: actions/cache/restore@v4
       with:
-        key: cache-build-${{ github.sha }}
+        key: cache-build-${{ github.sha }}-${{ inputs.cloud-assembly-directory }}
         path: |-
-          cdk.out/
+          ${{ inputs.cloud-assembly-directory }}/
           node_modules/
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
