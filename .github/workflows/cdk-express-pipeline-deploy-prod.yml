@@ -7,10 +7,21 @@ on:
     branches:
       - production
 jobs:
+  synth__prod:
+    name: Synth prod
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Synth
+        uses: ./.github/actions/cdk-express-pipeline-synth
+        with:
+          command: npm run cdk -- synth '**' -c env=prod --output=cdk.out/prod
+          cloud-assembly-directory: cdk.out/prod
   deploy__prod___Wave1_Stage1_StackA:
     name: "[prod] 📦 Wave1_Stage1_StackA"
     needs:
-      - build
+      - synth__prod
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -31,7 +42,7 @@ jobs:
   deploy__prod___Wave1_Stage1_StackB:
     name: "[prod] 📦 Wave1_Stage1_StackB"
     needs:
-      - build
+      - synth__prod
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -52,7 +63,7 @@ jobs:
   deploy__prod___Wave1_Stage2_Stack2A:
     name: "[prod] 📦 Wave1_Stage2_Stack2A"
     needs:
-      - build
+      - synth__prod
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -73,7 +84,6 @@ jobs:
   deploy__prod___Wave2_Stage1_StackC:
     name: "[prod] 📦 Wave2_Stage1_StackC"
     needs:
-      - build
       - deploy__prod___Wave1_Stage1_StackA
       - deploy__prod___Wave1_Stage1_StackB
       - deploy__prod___Wave1_Stage2_Stack2A

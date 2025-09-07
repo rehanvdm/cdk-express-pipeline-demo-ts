@@ -125,9 +125,7 @@ jobs:
       id-token: write
       pull-requests: write
     needs:
-      - synth__dev
       - diff__dev
-      - synth__prod
       - diff__prod
     steps:
       - name: Checkout repo
