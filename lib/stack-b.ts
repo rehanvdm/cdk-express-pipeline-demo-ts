@@ -7,7 +7,7 @@ export class StackB extends ExpressStack {
   constructor(scope: Construct, id: string, stage: ExpressStage, stackProps?: StackProps) {
     super(scope, id, stage, stackProps);
 
-    new cdk.aws_sns.Topic(this, 'MyTopicB');
+    new cdk.aws_sns.Topic(this, 'MyTopicBB');
     // ... more resources
   }
 }
