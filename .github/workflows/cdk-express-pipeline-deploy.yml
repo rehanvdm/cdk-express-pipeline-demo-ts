@@ -8,18 +8,21 @@ on:
     branches:
       - main
 jobs:
-  build:
+  synth__dev:
+    name: Synth dev
     runs-on: ubuntu-latest
-    name: Build and Synth
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
-  deploy__default___Wave1_Stage1_StackA:
-    name: "[default] 📦 Wave1_Stage1_StackA"
+        with:
+          command: npm run cdk -- synth '**'
+          cloud-assembly-directory: cdk.out
+  deploy__dev___Wave1_Stage1_StackA:
+    name: "[dev] 📦 Wave1_Stage1_StackA"
     needs:
-      - build
+      - synth__dev
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -37,10 +40,10 @@ jobs:
             --require-approval never --exclusively
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
-  deploy__default___Wave1_Stage1_StackB:
-    name: "[default] 📦 Wave1_Stage1_StackB"
+  deploy__dev___Wave1_Stage1_StackB:
+    name: "[dev] 📦 Wave1_Stage1_StackB"
     needs:
-      - build
+      - synth__dev
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -58,12 +61,11 @@ jobs:
             --require-approval never --exclusively
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
-  deploy__default___Wave2_Stage1_StackC:
-    name: "[default] 📦 Wave2_Stage1_StackC"
+  deploy__dev___Wave2_Stage1_StackC:
+    name: "[dev] 📦 Wave2_Stage1_StackC"
     needs:
-      - build
-      - deploy__default___Wave1_Stage1_StackA
-      - deploy__default___Wave1_Stage1_StackB
+      - deploy__dev___Wave1_Stage1_StackA
+      - deploy__dev___Wave1_Stage1_StackB
     runs-on: ubuntu-latest
     permissions:
       actions: write

@@ -36,13 +36,8 @@ expressPipeline.synth([
 app.synth();
 
 expressPipeline.generateGitHubWorkflows({
-  synth: {
-    buildConfig: {
-      type: 'preset-npm',
-    },
-    commands: [
-      { default: "npm run cdk -- synth '**'" },
-    ],
+  buildConfig: {
+    type: 'preset-npm',
   },
   diff: [{
     on: {
@@ -51,12 +46,14 @@ expressPipeline.generateGitHubWorkflows({
       },
     },
     stackSelector: 'wave',
-    writeAsComment: true,
     assumeRoleArn: 'arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role',
     assumeRegion: 'us-east-1',
-    commands: [
-      { default: 'npm run cdk -- diff {stackSelector}' },
-    ],
+    commands: {
+      dev: {
+        synth: "npm run cdk -- synth '**'",
+        diff: 'npm run cdk -- diff {stackSelector}'
+      }
+    }
   }],
   deploy: [{
     on: {
@@ -67,8 +64,11 @@ expressPipeline.generateGitHubWorkflows({
     stackSelector: 'stack',
     assumeRoleArn: 'arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role',
     assumeRegion: 'us-east-1',
-    commands: [
-      { default: 'npm run cdk -- deploy {stackSelector} --concurrency 10 --require-approval never --exclusively' },
-    ],
+    commands: {
+      dev: {
+        synth: "npm run cdk -- synth '**'",
+        deploy: 'npm run cdk -- deploy {stackSelector} --concurrency 10 --require-approval never --exclusively'
+      }
+    }
   }]
 });

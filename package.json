@@ -7,6 +7,7 @@
   "scripts": {
     "cdk": "cdk",
     "cdk:ls": "cdk ls",
+    "cdk:generate-pipeline": "cdk ls",
     "build": "tsc",
     "watch": "tsc -w",
     "diff": "cdk diff '**' --profile rehan-demo-exported",
@@ -31,7 +32,7 @@
   },
   "dependencies": {
     "aws-cdk-lib": "2.136.0",
-    "cdk-express-pipeline": "^1.6.0",
+    "cdk-express-pipeline": "^2.0.0",
     "constructs": "10.0.5",
     "source-map-support": "^0.5.21"
   }
