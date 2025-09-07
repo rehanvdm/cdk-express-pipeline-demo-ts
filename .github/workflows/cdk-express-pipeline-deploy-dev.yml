@@ -3,7 +3,7 @@ concurrency:
   group: cdk-express-pipeline-deploy-dev
   cancel-in-progress: false
 on:
-  pull_request:
+  push:
     branches:
       - main
 jobs:
