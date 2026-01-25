@@ -19,6 +19,7 @@ jobs:
         with:
           command: npm run cdk -- synth '**'
           cloud-assembly-directory: cdk.out
+          working-directory: .
   deploy__dev___Wave1_Stage1_StackA:
     name: "[dev] 📦 Wave1_Stage1_StackA"
     needs:
@@ -40,6 +41,7 @@ jobs:
             --require-approval never --exclusively
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
+          working-directory: .
   deploy__dev___Wave1_Stage1_StackB:
     name: "[dev] 📦 Wave1_Stage1_StackB"
     needs:
@@ -61,6 +63,7 @@ jobs:
             --require-approval never --exclusively
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
+          working-directory: .
   deploy__dev___Wave2_Stage1_StackC:
     name: "[dev] 📦 Wave2_Stage1_StackC"
     needs:
@@ -83,3 +86,4 @@ jobs:
             --require-approval never --exclusively
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
+          working-directory: .

@@ -16,6 +16,7 @@ jobs:
         with:
           command: npm run cdk -- synth '**'
           cloud-assembly-directory: cdk.out
+          working-directory: .
   diff__dev:
     name: ${{ matrix.job-name }}
     needs:
