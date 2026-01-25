@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "aws-cdk-lib": "2.136.0",
-    "cdk-express-pipeline": "file:../cdk-express-pipeline/dist/js/cdk-express-pipeline@0.0.0.jsii.tgz",
+    "cdk-express-pipeline": "^2.1.0",
     "constructs": "10.0.5",
     "source-map-support": "^0.5.21"
   }
