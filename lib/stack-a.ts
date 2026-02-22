@@ -15,7 +15,6 @@ export class StackA extends ExpressStack {
       displayName: 'Topic AAA'
     });
 
-    throw new Error('Simulate an error in StackA');
     // ... more resources
   }
 }
