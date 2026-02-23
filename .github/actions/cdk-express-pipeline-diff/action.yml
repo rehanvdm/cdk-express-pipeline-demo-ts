@@ -40,7 +40,7 @@ runs:
     - name: CDK Diff Generate
       uses: rehanvdm/cdk-express-pipeline-github-diff@copilot/update-description-for-commit
       with:
-        mode: generateERROR
+        mode: generate
         cloud-assembly-directory: ${{ inputs.cloud-assembly-directory }}
         stack-selectors: ${{ inputs.stack-selector-patterns }}
         github-token: ${{ inputs.github-token }}
