@@ -18,7 +18,7 @@ jobs:
           cloud-assembly-directory: cdk.out
           working-directory: .
   diff__dev:
-    name: ${{ matrix.job-name }}
+    name: Diff dev - wave1___${{ matrix.stage }}
     needs:
       - synth__dev
     runs-on: ubuntu-latest
@@ -29,31 +29,7 @@ jobs:
       pull-requests: write
     strategy:
       matrix:
-        include:
-          - job-name: Diff dev - wave1___stage1
-            cloud-assembly-directory: cdk.out
-            stack-selector-patterns: Wave1_Stage1_*
-            command: npm run cdk -- diff Wave1_Stage1_*
-            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
-            assume-region: us-east-1
-          - job-name: Diff dev - wave1___stage2
-            cloud-assembly-directory: cdk.out
-            stack-selector-patterns: Wave1_Stage2_*
-            command: npm run cdk -- diff Wave1_Stage2_*
-            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
-            assume-region: us-east-1
-          - job-name: Diff dev - wave1___stage3
-            cloud-assembly-directory: cdk.out
-            stack-selector-patterns: Wave1_Stage3_*
-            command: npm run cdk -- diff Wave1_Stage3_*
-            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
-            assume-region: us-east-1
-          - job-name: Diff dev - wave2___stage1
-            cloud-assembly-directory: cdk.out
-            stack-selector-patterns: Wave2_Stage1_*
-            command: npm run cdk -- diff Wave2_Stage1_*
-            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
-            assume-region: us-east-1
+        stage: [Stage1, Stage2, Stage3]
       fail-fast: false
     steps:
       - name: Checkout repo
@@ -61,13 +37,13 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-diff
         with:
-          job-name: ${{ matrix.job-name }}
-          stack-selector-patterns: ${{ matrix.stack-selector-patterns }}
-          cloud-assembly-directory: ${{ matrix.cloud-assembly-directory }}
-          command: ${{ matrix.command }}
+          job-name: Diff dev - wave1___${{ matrix.stage }}
+          stack-selector-patterns: Wave1_${{ matrix.stage }}_*
+          cloud-assembly-directory: cdk.out
+          command: npm run cdk -- diff Wave1_${{ matrix.stage }}_*
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          assume-role-arn: ${{ matrix.assume-role-arn }}
-          assume-region: ${{ matrix.assume-region }}
+          assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+          assume-region: us-east-1
   print_diff:
     name: Print Diff
     runs-on: ubuntu-latest
