@@ -61,6 +61,8 @@ jobs:
       matrix:
         stage:
           - Stage1
+          - Stage2
+          - Stage3
       fail-fast: false
     steps:
       - name: Checkout repo

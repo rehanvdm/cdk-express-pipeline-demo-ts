@@ -38,6 +38,10 @@ new StackC(app, 'StackC', wave2Stage1, {env: stackEnv});
 const wave2Stage2 = wave2.addStage('Stage2');
 new StackC(app, 'StackC2', wave2Stage2, {env: stackEnv});
 
+const wave2Stage3 = wave2.addStage('Stage3');
+new StackC(app, 'StackC3', wave2Stage3, {env: stackEnv});
+
+
 expressPipeline.synth([
   wave1,
   wave2,
