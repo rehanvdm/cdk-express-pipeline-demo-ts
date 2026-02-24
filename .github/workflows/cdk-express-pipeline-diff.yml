@@ -5,8 +5,8 @@ on:
     branches:
       - main
 jobs:
-  synth__dev:
-    name: Synth dev
+  synth__wave1:
+    name: Synth Wave 1
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -15,12 +15,26 @@ jobs:
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
           command: npm run cdk -- synth '**'
-          cloud-assembly-directory: cdk.out
+          cloud-assembly-directory: cdk.out/wave1
           working-directory: .
+
+  synth__wave2:
+    name: Synth Wave 2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Synth
+        uses: ./.github/actions/cdk-express-pipeline-synth
+        with:
+          command: npm run cdk -- synth '**'
+          cloud-assembly-directory: cdk.out/wave2
+          working-directory: .
+
   diff__wave1:
     name: Diff dev - wave1___${{ matrix.stage }}
     needs:
-      - synth__dev
+      - synth__wave1
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -47,10 +61,11 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
+
   diff__wave2:
     name: Diff dev - wave2___${{ matrix.stage }}
     needs:
-      - synth__dev
+      - synth__wave2
     runs-on: ubuntu-latest
     permissions:
       actions: write
