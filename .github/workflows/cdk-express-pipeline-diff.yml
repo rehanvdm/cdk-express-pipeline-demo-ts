@@ -17,7 +17,7 @@ jobs:
           command: npm run cdk -- synth '**'
           cloud-assembly-directory: cdk.out
           working-directory: .
-  diff__dev:
+  diff__wave1:
     name: Diff dev - wave1___${{ matrix.stage }}
     needs:
       - synth__dev
@@ -29,7 +29,10 @@ jobs:
       pull-requests: write
     strategy:
       matrix:
-        stage: [Stage1, Stage2, Stage3]
+        stage:
+          - Stage1
+          - Stage2
+          - Stage3
       fail-fast: false
     steps:
       - name: Checkout repo
@@ -44,6 +47,34 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
+  diff__wave2:
+    name: Diff dev - wave2___${{ matrix.stage }}
+    needs:
+      - synth__dev
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      id-token: write
+      pull-requests: write
+    strategy:
+      matrix:
+        stage:
+          - Stage1
+      fail-fast: false
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run CDK Express Pipeline Synth
+        uses: ./.github/actions/cdk-express-pipeline-diff
+        with:
+          job-name: Diff dev - wave2___${{ matrix.stage }}
+          stack-selector-patterns: Wave2_${{ matrix.stage }}_*
+          cloud-assembly-directory: cdk.out
+          command: npm run cdk -- diff Wave2_${{ matrix.stage }}_*
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+          assume-region: us-east-1
   print_diff:
     name: Print Diff
     runs-on: ubuntu-latest
@@ -53,7 +84,8 @@ jobs:
       id-token: write
       pull-requests: write
     needs:
-      - diff__dev
+      - diff__wave1
+      - diff__wave2
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
