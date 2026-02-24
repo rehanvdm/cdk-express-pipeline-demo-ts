@@ -8,7 +8,7 @@ export class StackA extends ExpressStack {
     super(scope, id, stage, stackProps);
 
     new cdk.aws_sns.Topic(this, 'MyTopicA',      {
-        displayName: 'Topic AAA Updated'
+        displayName: 'Topic AAA Updated 1'
       });
 
     new cdk.aws_sns.Topic(this, 'MyTopicA2',      {
