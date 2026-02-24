@@ -25,11 +25,9 @@ stackB.addExpressDependency(stackA);
 
 const wave1Stage2 = wave1.addStage('Stage2');
 new StackA(app, 'Stack2A', wave1Stage2, {env: stackEnv});
-new StackB(app, 'Stack2B', wave1Stage2, {env: stackEnv});
 
 const wave1Stage3 = wave1.addStage('Stage3');
 new StackA(app, 'Stack3A', wave1Stage3, {env: stackEnv});
-new StackB(app, 'Stack3B', wave1Stage3, {env: stackEnv});
 
 // === Wave 2 ===
 const wave2 = expressPipeline.addWave('Wave2');
