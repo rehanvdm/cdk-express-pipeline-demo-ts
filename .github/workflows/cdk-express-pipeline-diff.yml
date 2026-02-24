@@ -70,7 +70,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Update PR Description
-        uses: rehanvdm/cdk-express-pipeline-github-diff@/hide-empty-resources
+        uses: rehanvdm/cdk-express-pipeline-github-diff@hide-empty-resources
         with:
           mode: print
           github-token: ${{ secrets.GITHUB_TOKEN }}
