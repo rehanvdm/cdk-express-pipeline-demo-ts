@@ -6,6 +6,7 @@ import { StackB } from '../lib/stack-b';
 import { StackC } from '../lib/stack-c';
 import {App} from "aws-cdk-lib";
 import {CdkExpressPipeline} from "cdk-express-pipeline";
+import {StackD} from "../lib/stack-d";
 
 const app = new App();
 const stackEnv = {
@@ -21,6 +22,7 @@ const wave1Stage1 = wave1.addStage('Stage1');
 
 const stackA = new StackA(app, 'StackA', wave1Stage1, {env: stackEnv});
 const stackB = new StackB(app, 'StackB', wave1Stage1, {env: stackEnv});
+new StackD(app, 'StackD', wave1Stage1, {env: stackEnv});
 stackB.addExpressDependency(stackA);
 
 const wave1Stage2 = wave1.addStage('Stage2');

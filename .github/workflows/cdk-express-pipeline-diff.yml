@@ -5,8 +5,8 @@ on:
     branches:
       - main
 jobs:
-  synth__wave1:
-    name: Synth Wave 1
+  synth__dev:
+    name: Synth dev
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -14,27 +14,13 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
-          command: npm run cdk -- synth '**' --output cdk.out/wave1
-          cloud-assembly-directory: cdk.out/wave1
+          command: npm run cdk -- synth '**'
+          cloud-assembly-directory: cdk.out
           working-directory: .
-
-  synth__wave2:
-    name: Synth Wave 2
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-      - name: Run CDK Express Pipeline Synth
-        uses: ./.github/actions/cdk-express-pipeline-synth
-        with:
-          command: npm run cdk -- synth '**' --output cdk.out/wave2
-          cloud-assembly-directory: cdk.out/wave2
-          working-directory: .
-
-  diff__wave1:
-    name: Diff dev - wave1___${{ matrix.stage }}
+  diff__dev:
+    name: ${{ matrix.job-name }}
     needs:
-      - synth__wave1
+      - synth__dev
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -43,10 +29,43 @@ jobs:
       pull-requests: write
     strategy:
       matrix:
-        stage:
-          - Stage1
-          - Stage2
-          - Stage3
+        include:
+          - job-name: Diff dev - wave1___stage1
+            cloud-assembly-directory: cdk.out
+            stack-selector-patterns: Wave1_Stage1_*
+            command: npm run cdk -- diff Wave1_Stage1_*
+            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+            assume-region: us-east-1
+          - job-name: Diff dev - wave1___stage2
+            cloud-assembly-directory: cdk.out
+            stack-selector-patterns: Wave1_Stage2_*
+            command: npm run cdk -- diff Wave1_Stage2_*
+            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+            assume-region: us-east-1
+          - job-name: Diff dev - wave1___stage3
+            cloud-assembly-directory: cdk.out
+            stack-selector-patterns: Wave1_Stage3_*
+            command: npm run cdk -- diff Wave1_Stage3_*
+            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+            assume-region: us-east-1
+          - job-name: Diff dev - wave2___stage1
+            cloud-assembly-directory: cdk.out
+            stack-selector-patterns: Wave2_Stage1_*
+            command: npm run cdk -- diff Wave2_Stage1_*
+            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+            assume-region: us-east-1
+          - job-name: Diff dev - wave2___stage2
+            cloud-assembly-directory: cdk.out
+            stack-selector-patterns: Wave2_Stage2_*
+            command: npm run cdk -- diff Wave2_Stage2_*
+            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+            assume-region: us-east-1
+          - job-name: Diff dev - wave2___stage3
+            cloud-assembly-directory: cdk.out
+            stack-selector-patterns: Wave2_Stage3_*
+            command: npm run cdk -- diff Wave2_Stage3_*
+            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+            assume-region: us-east-1
       fail-fast: false
     steps:
       - name: Checkout repo
@@ -54,44 +73,13 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-diff
         with:
-          job-name: Diff dev - wave1___${{ matrix.stage }}
-          stack-selector-patterns: Wave1_${{ matrix.stage }}_*
-          cloud-assembly-directory: cdk.out/wave1
-          command: npm run cdk -- diff Wave1_${{ matrix.stage }}_*
+          job-name: ${{ matrix.job-name }}
+          stack-selector-patterns: ${{ matrix.stack-selector-patterns }}
+          cloud-assembly-directory: ${{ matrix.cloud-assembly-directory }}
+          command: ${{ matrix.command }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
-          assume-region: us-east-1
-
-  diff__wave2:
-    name: Diff dev - wave2___${{ matrix.stage }}
-    needs:
-      - synth__wave2
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write
-      contents: write
-      id-token: write
-      pull-requests: write
-    strategy:
-      matrix:
-        stage:
-          - Stage1
-          - Stage2
-          - Stage3
-      fail-fast: false
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-      - name: Run CDK Express Pipeline Synth
-        uses: ./.github/actions/cdk-express-pipeline-diff
-        with:
-          job-name: Diff dev - wave2___${{ matrix.stage }}
-          stack-selector-patterns: Wave2_${{ matrix.stage }}_*
-          cloud-assembly-directory: cdk.out/wave2
-          command: npm run cdk -- diff Wave2_${{ matrix.stage }}_*
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
-          assume-region: us-east-1
+          assume-role-arn: ${{ matrix.assume-role-arn }}
+          assume-region: ${{ matrix.assume-region }}
   print_diff:
     name: Print Diff
     runs-on: ubuntu-latest
@@ -101,20 +89,13 @@ jobs:
       id-token: write
       pull-requests: write
     needs:
-      - diff__wave1
-      - diff__wave2
+      - diff__dev
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Update PR Description
-        uses: rehanvdm/cdk-express-pipeline-github-diff@hide-empty-resources-2
-#        uses: rehanvdm/cdk-express-pipeline-github-diff@v0.1.4
-#        uses: rehanvdm/cdk-express-pipeline-github-diff@fix-cache
+        uses: rehanvdm/cdk-express-pipeline-github-diff@v0.1.3
         with:
           mode: print
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          cloud-assemblies: |
-            - header: Wave 1
-              directory: cdk.out/wave1
-            - header: Wave 2
-              directory: cdk.out/wave2
+          cloud-assemblies: '[{"header":"CDK Diff - dev","directory":"cdk.out"}]'
