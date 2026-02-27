@@ -108,7 +108,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Update PR Description
 #        uses: rehanvdm/cdk-express-pipeline-github-diff@hide-empty-resources
-        uses: rehanvdm/cdk-express-pipeline-github-diff@v0.1.4
+#        uses: rehanvdm/cdk-express-pipeline-github-diff@v0.1.4
+        uses: rehanvdm/cdk-express-pipeline-github-diff@fix-cache
         with:
           mode: print
           github-token: ${{ secrets.GITHUB_TOKEN }}
