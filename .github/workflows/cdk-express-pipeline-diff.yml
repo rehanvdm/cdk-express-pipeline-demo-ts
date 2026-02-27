@@ -14,7 +14,7 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
-          command: npm run cdk -- synth '**'
+          command: npm run cdk -- synth '**' --output cdk.out/wave1
           cloud-assembly-directory: cdk.out/wave1
           working-directory: .
 
@@ -27,7 +27,7 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
-          command: npm run cdk -- synth '**'
+          command: npm run cdk -- synth '**' --output cdk.out/wave2
           cloud-assembly-directory: cdk.out/wave2
           working-directory: .
 
