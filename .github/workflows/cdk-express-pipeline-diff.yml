@@ -16,6 +16,7 @@ jobs:
         with:
           command: npm run cdk -- synth '**'
           cloud-assembly-directory: cdk.out
+          working-directory: .
   diff__dev:
     name: ${{ matrix.job-name }}
     needs:
@@ -29,16 +30,40 @@ jobs:
     strategy:
       matrix:
         include:
-          - job-name: Diff dev - wave1
+          - job-name: Diff dev - wave1___stage1
             cloud-assembly-directory: cdk.out
-            stack-selector-patterns: Wave1_*
-            command: npm run cdk -- diff Wave1_*
+            stack-selector-patterns: Wave1_Stage1_*
+            command: npm run cdk -- diff Wave1_Stage1_*
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
-          - job-name: Diff dev - wave2
+          - job-name: Diff dev - wave1___stage2
             cloud-assembly-directory: cdk.out
-            stack-selector-patterns: Wave2_*
-            command: npm run cdk -- diff Wave2_*
+            stack-selector-patterns: Wave1_Stage2_*
+            command: npm run cdk -- diff Wave1_Stage2_*
+            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+            assume-region: us-east-1
+          - job-name: Diff dev - wave1___stage3
+            cloud-assembly-directory: cdk.out
+            stack-selector-patterns: Wave1_Stage3_*
+            command: npm run cdk -- diff Wave1_Stage3_*
+            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+            assume-region: us-east-1
+          - job-name: Diff dev - wave2___stage1
+            cloud-assembly-directory: cdk.out
+            stack-selector-patterns: Wave2_Stage1_*
+            command: npm run cdk -- diff Wave2_Stage1_*
+            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+            assume-region: us-east-1
+          - job-name: Diff dev - wave2___stage2
+            cloud-assembly-directory: cdk.out
+            stack-selector-patterns: Wave2_Stage2_*
+            command: npm run cdk -- diff Wave2_Stage2_*
+            assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
+            assume-region: us-east-1
+          - job-name: Diff dev - wave2___stage3
+            cloud-assembly-directory: cdk.out
+            stack-selector-patterns: Wave2_Stage3_*
+            command: npm run cdk -- diff Wave2_Stage3_*
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
       fail-fast: false
@@ -69,7 +94,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Update PR Description
-        uses: rehanvdm/cdk-express-pipeline-github-diff@v0.1.3
+        uses: rehanvdm/cdk-express-pipeline-github-diff@hide-empty-resources-2
         with:
           mode: print
           github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -6,6 +6,7 @@ import { StackB } from '../lib/stack-b';
 import { StackC } from '../lib/stack-c';
 import {App} from "aws-cdk-lib";
 import {CdkExpressPipeline} from "cdk-express-pipeline";
+import {StackD} from "../lib/stack-d";
 
 const app = new App();
 const stackEnv = {
@@ -21,13 +22,27 @@ const wave1Stage1 = wave1.addStage('Stage1');
 
 const stackA = new StackA(app, 'StackA', wave1Stage1, {env: stackEnv});
 const stackB = new StackB(app, 'StackB', wave1Stage1, {env: stackEnv});
+new StackD(app, 'StackD', wave1Stage1, {env: stackEnv});
 stackB.addExpressDependency(stackA);
+
+const wave1Stage2 = wave1.addStage('Stage2');
+new StackA(app, 'Stack2A', wave1Stage2, {env: stackEnv});
+
+const wave1Stage3 = wave1.addStage('Stage3');
+new StackA(app, 'Stack3A', wave1Stage3, {env: stackEnv});
 
 // === Wave 2 ===
 const wave2 = expressPipeline.addWave('Wave2');
 // --- Wave 2, Stage 1---
 const wave2Stage1 = wave2.addStage('Stage1');
 new StackC(app, 'StackC', wave2Stage1, {env: stackEnv});
+
+const wave2Stage2 = wave2.addStage('Stage2');
+new StackC(app, 'StackC2', wave2Stage2, {env: stackEnv});
+
+const wave2Stage3 = wave2.addStage('Stage3');
+new StackC(app, 'StackC3', wave2Stage3, {env: stackEnv});
+
 
 expressPipeline.synth([
   wave1,
@@ -45,7 +60,7 @@ expressPipeline.generateGitHubWorkflows({
         branches: ['main'],
       },
     },
-    stackSelector: 'wave',
+    stackSelector: 'stage',
     assumeRoleArn: 'arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role',
     assumeRegion: 'us-east-1',
     commands: {

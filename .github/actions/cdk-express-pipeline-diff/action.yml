@@ -38,10 +38,20 @@ runs:
         role-to-assume: ${{ inputs.assume-role-arn }}
         aws-region: ${{ inputs.assume-region }}
     - name: CDK Diff Generate
-      uses: rehanvdm/cdk-express-pipeline-github-diff@v0.1.3
+      uses: rehanvdm/cdk-express-pipeline-github-diff@hide-empty-resources-2
       with:
         mode: generate
         cloud-assembly-directory: ${{ inputs.cloud-assembly-directory }}
         stack-selectors: ${{ inputs.stack-selector-patterns }}
         github-token: ${{ inputs.github-token }}
         job-name: ${{ inputs.job-name }}
+        diff-rules: |
+          - name: hide-dd-tags
+            type: HIDE_PROPERTIES 
+            path: AWS::Lambda::Function.*.Environment.Variables.VERSION
+          - name: hide-code-changes
+            type: HIDE_PROPERTIES 
+            path: AWS::Lambda::Function.*.Code.*
+          - name: hide-lambda-if-all-changes-are-hidden
+            type: HIDE_RESOURCE_IF_EMPTY 
+            path: AWS::Lambda::Function.*

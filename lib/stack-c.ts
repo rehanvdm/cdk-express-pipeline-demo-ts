@@ -9,6 +9,7 @@ export class StackC extends ExpressStack {
 
     new cdk.aws_sns.Topic(this, 'MyTopicC', {
       topicName: 'MyTopicC',
+      displayName: 'Topic CCC'
     });
     // ... more resources
   }
