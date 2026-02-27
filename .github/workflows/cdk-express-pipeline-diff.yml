@@ -15,7 +15,7 @@ jobs:
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
           command: npm run cdk -- synth '**'
-          cloud-assembly-directory: cdk.out/wave1
+          cloud-assembly-directory: cdk.out-wave1
           working-directory: .
 
   synth__wave2:
@@ -28,7 +28,7 @@ jobs:
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
           command: npm run cdk -- synth '**'
-          cloud-assembly-directory: cdk.out/wave2
+          cloud-assembly-directory: cdk.out-wave2
           working-directory: .
 
   diff__wave1:
@@ -56,7 +56,7 @@ jobs:
         with:
           job-name: Diff dev - wave1___${{ matrix.stage }}
           stack-selector-patterns: Wave1_${{ matrix.stage }}_*
-          cloud-assembly-directory: cdk.out/wave1
+          cloud-assembly-directory: cdk.out-wave1
           command: npm run cdk -- diff Wave1_${{ matrix.stage }}_*
           github-token: ${{ secrets.GITHUB_TOKEN }}
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
@@ -87,7 +87,7 @@ jobs:
         with:
           job-name: Diff dev - wave2___${{ matrix.stage }}
           stack-selector-patterns: Wave2_${{ matrix.stage }}_*
-          cloud-assembly-directory: cdk.out/wave2
+          cloud-assembly-directory: cdk.out-wave2
           command: npm run cdk -- diff Wave2_${{ matrix.stage }}_*
           github-token: ${{ secrets.GITHUB_TOKEN }}
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
@@ -115,6 +115,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cloud-assemblies: |
             - header: Wave 1
-              directory: cdk.out/wave1
+              directory: cdk.out-wave1
             - header: Wave 2
-              directory: cdk.out/wave2
+              directory: cdk.out-wave2
