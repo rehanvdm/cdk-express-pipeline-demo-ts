@@ -48,7 +48,7 @@ runs:
         diff-rules: |
           - name: hide-dd-tags
             type: HIDE_PROPERTIES 
-            path: AWS::Lambda::Function.*.Environment.Variables.DD_TAGS
+            path: AWS::Lambda::Function.*.Environment.Variables.VERSION
           - name: hide-code-changes
             type: HIDE_PROPERTIES 
             path: AWS::Lambda::Function.*.Code.*
